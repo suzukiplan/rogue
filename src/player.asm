@@ -1,3 +1,4 @@
+#define PLAYER_OAM vdp_oam_addr + oam_size * si_player
 #define PLAYER_MOVE_POW 77
 #define PLAYER_MOVE_DEC 44
 
@@ -16,7 +17,7 @@
     ret
 
 player_render_refresh:
-    ld hl, vdp_oam_addr + oam_size * si_player
+    ld hl, PLAYER_OAM
     ld a, (player_y + 1)
     ld (hl), a
     inc hl
@@ -121,7 +122,7 @@ player_move_animate:
     ld b, a
     ld a, (player_dir)
     add b
-    ld (vdp_oam_addr + oam_size * si_player + oam_ptn), a
+    ld (PLAYER_OAM + oam_ptn), a
     
 player_move_animate_end:
 
@@ -137,7 +138,7 @@ player_move_update_vars_x:
     add hl, de
     ld (player_x), hl
     ld a, h
-    ld (vdp_oam_addr + oam_size * si_player + oam_x), a
+    ld (PLAYER_OAM + oam_x), a
 
     ld a, d
     and $80
@@ -169,7 +170,7 @@ player_move_update_vars_y:
     add hl, de
     ld (player_y), hl
     ld a, h
-    ld (vdp_oam_addr + oam_size * si_player + oam_y), a
+    ld (PLAYER_OAM + oam_y), a
 
     ld a, d
     and $80
