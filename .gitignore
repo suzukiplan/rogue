@@ -1,0 +1,8 @@
+game.pkg
+*.tmp
+*.bin
+*.chr
+*.o
+*.rom
+screen_240x192.bmp
+screen_480x384.bmp
