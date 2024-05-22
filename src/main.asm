@@ -27,10 +27,19 @@ main_loop:
     ld de, (player_vx)
     ld hl, $0305
     call vdp_print_s16_with_DEHL
+    ld a, ' '
+    ld (hl), a
+    inc hl
+    ld (hl), a
 
     ld de, (player_vy)
     ld hl, $0405
     call vdp_print_s16_with_DEHL
+    ld a, ' '
+    ld (hl), a
+    inc hl
+    ld (hl), a
+
     jmp main_loop
 
 .end:

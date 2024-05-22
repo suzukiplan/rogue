@@ -167,11 +167,11 @@ vdp_print_bg_with_DEHL_end:
 ; h = X座標
 ; l = Y座標
 ; de = 表示する数字列
+; hl に最後に書いた文字のアドレス+1 を返す
 .vdp_print_s16_with_DEHL
     push af
     push bc
     push de
-    push hl
 
     call vdp_xy_to_bg_HL
 
@@ -299,14 +299,7 @@ vdp_print_s16_with_DEHL_put1:
     ld (hl), a
     inc hl
 
-    ; 最後に空白を描画
-    ld a, ' '
-    ld (hl), a
-    inc hl
-    ld (hl), a
-
 vdp_print_s16_with_DEHL_end:
-    pop hl
     pop de
     pop bc
     pop af
