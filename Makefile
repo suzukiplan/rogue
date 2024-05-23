@@ -4,11 +4,10 @@ MAKEPKG = ./vgszero/tools/makepkg/makepkg
 BMP2CHR = ./vgszero/tools/bmp2chr/bmp2chr
 EMU = ./vgszero/src/sdl2/vgs0
 
-all: tools game.pkg ${EMU}
-	${EMU} game.pkg
+all: tools image/game.pkg ${EMU}
+	${EMU} image/game.pkg
 
 clean:
-	rm -f game.pkg
 	rm -f *.tmp
 	rm -f *.bin
 	rm -f *.chr
@@ -19,7 +18,7 @@ tools:
 	cd ./vgszero/tools/makepkg && make
 	cd ./vgszero/tools/bmp2chr && make
 
-game.pkg: program.rom
+image/game.pkg: program.rom
 	${MAKEPKG} -o $@ -r program.rom
 
 program.rom: font.chr player.chr program.bin
