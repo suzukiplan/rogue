@@ -1,4 +1,4 @@
-# Rogue Police (仮)
+# Rogue Like A.RPG Prototype (仮)
 
 - VGS-Zero ソフト第2段
 - ローグライク ARPG
