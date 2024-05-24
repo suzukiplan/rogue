@@ -46,6 +46,8 @@ main_loop:
     jr main_loop
 
 .end:
+    di
+    halt
     jp end
 
 hello: db "ROGUE LIKE A.RPG PROTOTYPE", 0
