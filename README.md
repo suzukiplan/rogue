@@ -4,11 +4,24 @@
 - ローグライク ARPG
 - オールマシン語（Z80 アセンブリ言語）で VGS-Zero のゲームを開発したい方向けに知見共有する目的で OSS にしておきます
 
+## How to Execute
+
+### on the Steam
+
+売れる水準のゲームが完成した場合は Steam で販売するかもしれません（未定）
+
+### on the RaspberryPi Zero 2W
+
+1. [./image](./image) ディレクトリ以下を micro SD カードへコピー
+2. micro SD カードを RaspberryPi Zero 2W へ挿入
+3. RaspberryPi Zero 2W へ USB ゲームパッドと電源を接続して起動
+
 ## How to Build
 
-本ゲームのビルド & テスト実行は __Linux (Ubuntu) で行うこと__ を前提としています。
+ビルドをすれば Linux (Ubuntu) のパソコン上で本ゲームを動かすことができます。
 
-> macOS でのビルドであれば可能かもしれませんが、Windows でのビルドは大変かもしれません。
+> - 本ゲームのビルド & テスト実行は __Linux (Ubuntu) で行うこと__ を前提としています。
+> - macOS でのビルドであれば可能かもしれませんが、Windows でのビルドは大変かもしれません。
 
 ### Pre-requests
 
