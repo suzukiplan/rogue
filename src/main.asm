@@ -6,6 +6,7 @@ org $0000
     di                              ; 割り込みは一切使わない
     ld sp, $0000                    ; スタックは 0xFFFF から使う
     call vdp_init                   ; 映像初期化
+    call player_init                ; プレイヤの座標初期化
 
 main_loop:
     call vdp_vsync_wait             ; 垂直動機
@@ -23,7 +24,6 @@ main_loop:
     ld hl, $0202
     ld de, hello
     call vdp_print_fg_with_DEHL
-    call player_init
 
     ; 現在のVXを表示
     ld hl, $0302
