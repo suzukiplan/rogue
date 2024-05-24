@@ -1,18 +1,18 @@
 ; バンク定義
 defvars $0000
 {
-    bank_prg ds.b 4
-    bank_palette ds.b 1
-    bank_font ds.b 1
-    bank_player ds.b 1
+    bank_prg ds.b 4                 ; プログラム
+    bank_palette ds.b 1             ; パレット
+    bank_font ds.b 1                ; フォント画像
+    bank_player ds.b 1              ; プレイヤ画像
 }
 
 ; スプライトインデクス定義
 defvars $0000
 {
-    si_weapon0 ds.b 1
-    si_player ds.b 1
-    si_weapon1 ds.b 1
+    si_weapon0 ds.b 1               ; プレイヤより描画優先度が高い武器
+    si_player ds.b 1                ; プレイヤ
+    si_weapon1 ds.b 1               ; プレイヤより描画優先度が低い武器
 }
 
 ; OAM レコード定義
