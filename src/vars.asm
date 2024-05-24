@@ -17,7 +17,7 @@ defvars $0000
     actbl_ptn ds.b 1                ; weapon sprite pattern number
     actbl_attr ds.b 1               ; weapon sprite attribute
     actbl_height ds.b 1             ; weapon sprite height (minus 1)
-    actbl_width ds.b 1              ; weapon sprite height (minus 1)
+    actbl_width ds.b 1              ; weapon sprite width (minus 1)
     actbl_bank ds.b 1               ; weapon sprite bank
     actbl_player ds.b 1             ; player sprite pattern number
     actbl_wtime ds.b 1              ; wait time (frames)
