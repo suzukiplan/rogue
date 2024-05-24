@@ -393,11 +393,17 @@ player_attack_do_w_end:
     ld (PLAYER_OAM + oam_ptn), a
     inc hl
 
+    ; AB が話されていればウェイトをスキップ
+    ld a, (joypad)
+    and %00000011
+    cp 3
+    jz player_attack_do_skip_ww
     ; ウェイト減算
     ld a, (player_ww)
     dec a
     ld (player_ww), a
     ret nz
+player_attack_do_skip_ww:
 
     ; 次のウェイトタイムを取得
     ld a, (hl)
