@@ -1,6 +1,8 @@
 ./game.pkg
 *.tmp
-*.bin
+actbl.bin
+palette.bin
+program.bin
 *.chr
 *.o
 *.rom
