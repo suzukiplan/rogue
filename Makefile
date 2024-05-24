@@ -41,6 +41,5 @@ player.chr: ./graphic/player.bmp
 	${BMP2CHR} $< $@
 
 ${EMU}:
-	git submodule update --init vgszero
 	cd vgszero/src/sdl2 && make
 

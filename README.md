@@ -33,7 +33,7 @@ Linux での環境構築方法を記します。
 sudo apt update
 
 # ビルドツールをインストール
-sudp apt install build-essential
+sudp apt install build-essential git-lfs
 
 # snapd をインストール (z88dk のインストールに必要)
 sudo apt install snapd
@@ -47,6 +47,8 @@ sudo snap install z88dk --beta
 ```
 git clone git@github.com:suzukiplan/rogue.git
 cd rogue
+git submodule init
+git submodule update
 make
 ```
 
