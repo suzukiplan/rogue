@@ -116,47 +116,53 @@ vdp_cls_oam_loop:
 
 
 ; HLに指定された座標X,Y座標をBGのBGのネームテーブルアドレスへ変換
-.vdp_xy_to_bg_HL
+.vdp_xy_to_fg_HL
     push af
     push bc
     ld b, h
     xor a
     ld h, a
-vdp_xy_to_bg_HL_loop:
+vdp_xy_to_fg_HL_loop:
     add hl, 32
-    djnz vdp_xy_to_bg_HL_loop
-    add hl, vdp_nametbl_bg
+    djnz vdp_xy_to_fg_HL_loop
+    add hl, vdp_nametbl_fg
     pop bc
     pop af
     ret
 
 
-; BG へ $00 終端の文字列を表示
+; FG へ $00 終端の文字列を表示
 ; h = X座標
 ; l = Y座標
 ; de = 文字列ポインタ
-.vdp_print_bg_with_DEHL
+.vdp_print_fg_with_DEHL
     push af
     push bc
     push de
     push hl
 
     ; 座標をアドレスオフセットへ変換
-    call vdp_xy_to_bg_HL
+    call vdp_xy_to_fg_HL
 
-vdp_print_bg_with_DEHL_loopW:
+vdp_print_fg_with_DEHL_loopW:
     ; 文字コード取得
     ld a, (de)
     and a
-    jz vdp_print_bg_with_DEHL_end
+    jz vdp_print_fg_with_DEHL_end
 
     ; 文字コード書き込み
     ld (hl), a
-    inc hl
-    inc de
-    jmp vdp_print_bg_with_DEHL_loopW
 
-vdp_print_bg_with_DEHL_end:
+    ; 属性更新
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
+
+    inc de
+    jmp vdp_print_fg_with_DEHL_loopW
+
+vdp_print_fg_with_DEHL_end:
     pop hl
     pop de
     pop bc
@@ -173,7 +179,7 @@ vdp_print_bg_with_DEHL_end:
     push bc
     push de
 
-    call vdp_xy_to_bg_HL
+    call vdp_xy_to_fg_HL
 
     ld a, d
     and $80
@@ -181,7 +187,12 @@ vdp_print_bg_with_DEHL_end:
 
     ; マイナスを描画
     ld (hl), '-'
-    inc hl
+
+    ; 属性更新
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
     ; 負数を正数にする
     push hl
@@ -207,7 +218,10 @@ vdp_print_s16_with_DEHL_put10k:
     ld b, 1 ; 以降は 0 でも描画
     add '0'
     ld (hl), a
-    inc hl
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
 vdp_print_s16_with_DEHL_put1k:
     push hl
@@ -234,7 +248,10 @@ vdp_print_s16_with_DEHL_put1k_do:
     ld a, c
     add '0'
     ld (hl), a
-    inc hl
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
 vdp_print_s16_with_DEHL_put100:
     push hl
@@ -260,7 +277,10 @@ vdp_print_s16_with_DEHL_put100_do:
     ld a, c
     add '0'
     ld (hl), a
-    inc hl
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
 vdp_print_s16_with_DEHL_put10:
     push hl
@@ -284,7 +304,10 @@ vdp_print_s16_with_DEHL_put10_do:
     ld a, c
     add '0'
     ld (hl), a
-    inc hl
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
 vdp_print_s16_with_DEHL_put1:
     push hl
@@ -297,7 +320,10 @@ vdp_print_s16_with_DEHL_put1:
     ld a, c
     add '0'
     ld (hl), a
-    inc hl
+    add hl, $0400
+    ld a, $80
+    ld (hl), a
+    add hl, -$03FF
 
 vdp_print_s16_with_DEHL_end:
     pop de

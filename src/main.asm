@@ -8,16 +8,16 @@ org $0000
 
     ld hl, $0202
     ld de, hello
-    call vdp_print_bg_with_DEHL
+    call vdp_print_fg_with_DEHL
     call player_init
 
     ld hl, $0302
     ld de, str_vx
-    call vdp_print_bg_with_DEHL
+    call vdp_print_fg_with_DEHL
 
     ld hl, $0402
     ld de, str_vy
-    call vdp_print_bg_with_DEHL
+    call vdp_print_fg_with_DEHL
 
 main_loop:
     call vdp_vsync_wait
@@ -28,7 +28,8 @@ main_loop:
     ld de, (player_vx)
     ld hl, $0305
     call vdp_print_s16_with_DEHL
-    ld a, ' '
+    add hl, $0400
+    xor a
     ld (hl), a
     inc hl
     ld (hl), a
@@ -36,7 +37,8 @@ main_loop:
     ld de, (player_vy)
     ld hl, $0405
     call vdp_print_s16_with_DEHL
-    ld a, ' '
+    add hl, $0400
+    xor a
     ld (hl), a
     inc hl
     ld (hl), a
