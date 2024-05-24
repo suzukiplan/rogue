@@ -60,4 +60,6 @@ defvars $c000
     player_wp ds.w 1                ; プレイヤ攻撃アクションテーブルのポインタ
     player_wi ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス
     player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
+    player_wk ds.b 1                ; 攻撃モーションキープモード・フラグ
+    player_wa ds.b actbl_size       ; 攻撃モーションキープ対象のアクションテーブル・レコード
 }
