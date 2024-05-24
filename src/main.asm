@@ -4,7 +4,6 @@ org $0000
 
 .init
     di
-    im 1
     ld sp, $0000
     call vdp_init
 
