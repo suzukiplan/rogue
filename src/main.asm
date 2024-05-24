@@ -41,18 +41,7 @@ main_loop:
     inc hl
     ld (hl), a
 
-ld hl, $0502
-ld a, (joypad)
-and %00000010
-jz md_on
-ld de, str_md_off
-call vdp_print_bg_with_DEHL
-jp main_loop
-md_on:
-ld de, str_md_on
-call vdp_print_bg_with_DEHL
-
-    jmp main_loop
+    jr main_loop
 
 .end:
     jp end
@@ -60,8 +49,6 @@ call vdp_print_bg_with_DEHL
 hello: db "ROGUE LIKE A.RPG PROTOTYPE", 0
 str_vx: db "VX:",0
 str_vy: db "VY:",0
-str_md_off: db "MT:OFF", 0
-str_md_on:  db "MT:ON ", 0
 
 #include "vars.asm"
 #include "vdp.asm"
