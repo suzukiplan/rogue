@@ -6,3 +6,5 @@
 *.rom
 screen_240x192.bmp
 screen_480x384.bmp
+tools/actbl
+

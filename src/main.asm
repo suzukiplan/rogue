@@ -1,3 +1,5 @@
+#include "actbl_define.asm"
+
 org $0000
 
 .init

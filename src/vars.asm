@@ -2,6 +2,7 @@
 defvars $0000
 {
     bank_prg ds.b 4                 ; プログラム
+    bank_actbl ds.b 1               ; アクションテーブル
     bank_palette ds.b 1             ; パレット
     bank_font ds.b 1                ; フォント画像
     bank_player ds.b 1              ; プレイヤ画像
@@ -62,4 +63,5 @@ defvars $c000
     player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
     player_wk ds.b 1                ; 攻撃モーションキープモード・フラグ
     player_wa ds.b actbl_size       ; 攻撃モーションキープ対象のアクションテーブル・レコード
+    actbl_work ds.b 512             ; アクションテーブルの読み込み領域
 }

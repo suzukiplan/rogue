@@ -97,16 +97,32 @@ player_attack_right:
     jz player_attack_rl
     jp player_attack_rr
 player_attack_rd:
-    ld hl, player_sword_rd
+    ld a, bank_actbl
+    ld bc, actbl_swd_rd
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_ru:
-    ld hl, player_sword_ru
+    ld a, bank_actbl
+    ld bc, actbl_swd_ru
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_rl:
-    ld hl, player_sword_rl
+    ld a, bank_actbl
+    ld bc, actbl_swd_rl
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_rr:
-    ld hl, player_sword_rr
+    ld a, bank_actbl
+    ld bc, actbl_swd_rr
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jr player_attack_set
 
     ; 現在の向きによって使う攻撃パターンテーブルを決める（左手）
@@ -120,16 +136,32 @@ player_attack_left:
     jz player_attack_ll
     jp player_attack_lr
 player_attack_ld:
-    ld hl, player_sword_ld
+    ld a, bank_actbl
+    ld bc, actbl_swd_ld
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_lu:
-    ld hl, player_sword_lu
+    ld a, bank_actbl
+    ld bc, actbl_swd_lu
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_ll:
-    ld hl, player_sword_ll
+    ld a, bank_actbl
+    ld bc, actbl_swd_ll
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
     jp player_attack_set
 player_attack_lr:
-    ld hl, player_sword_lr
+    ld a, bank_actbl
+    ld bc, actbl_swd_lr
+    ld de, 512
+    ld hl, actbl_work
+    out ($c1), a
 
     ; 攻撃モーションセット
 player_attack_set:
