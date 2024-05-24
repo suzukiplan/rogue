@@ -10,7 +10,9 @@ defvars $0000
 ; スプライトインデクス定義
 defvars $0000
 {
+    si_weapon0 ds.b 1
     si_player ds.b 1
+    si_weapon1 ds.b 1
 }
 
 ; OAM レコード定義
@@ -38,4 +40,8 @@ defvars $c000
     player_y ds.w 1                 ; プレイヤY座標（実数）
     player_vx ds.w 1                ; プレイヤX移動量（実数）
     player_vy ds.w 1                ; プレイヤX移動量（実数）
+    player_wf ds.b 1                ; プレイヤ攻撃アクションフラグ
+    player_wp ds.w 1                ; プレイヤ攻撃アクションテーブルのポインタ
+    player_wi ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス
+    player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
 }
