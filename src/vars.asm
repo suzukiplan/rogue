@@ -7,6 +7,22 @@ defvars $0000
     bank_player ds.b 1              ; プレイヤ画像
 }
 
+; アクションテーブル
+defvars $0000
+{
+    actbl_oi ds.b 1                 ; oam index (0: weapon0, 1: weapon1)
+    actbl_yof ds.b 1                ; y offset (-128 ~ 127)
+    actbl_xof ds.b 1                ; x offset (-128 ~ 127)
+    actbl_ptn ds.b 1                ; weapon sprite pattern number
+    actbl_attr ds.b 1               ; weapon sprite attribute
+    actbl_height ds.b 1             ; weapon sprite height (minus 1)
+    actbl_width ds.b 1              ; weapon sprite height (minus 1)
+    actbl_bank ds.b 1               ; weapon sprite bank
+    actbl_player ds.b 1             ; player sprite pattern number
+    actbl_wtime ds.b 1              ; wait time (frames)
+    actbl_size ds.b 1
+}
+
 ; スプライトインデクス定義
 defvars $0000
 {

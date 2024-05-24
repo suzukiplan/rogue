@@ -422,7 +422,7 @@ player_attack_do_skip_ww:
 player_attack_next:
     ; インデックス加算
     ld a, (player_wi)
-    add 10
+    add actbl_size
     ld (player_wi), a
     ld a, b
     ld (player_ww), a
