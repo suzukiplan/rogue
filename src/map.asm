@@ -235,6 +235,9 @@ map_render_loopY:
 map_render_loopX:
     push de
     ld a, (map_left)
+    add 32
+    sub b
+    and $3F
     add e
     ld e, a
     ld a, $A0
@@ -243,15 +246,11 @@ map_render_loopX:
     ld a, (de)
     ld (hl), a
     pop de
-    inc de
     inc hl
     djnz map_render_loopX
 
-    ld a, e
-    add 32
-    ld e, a
-    ld a, 0
-    adc d
+    add de, 64
+    ld a, d
     and $0F
     ld d, a
 
