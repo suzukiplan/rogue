@@ -6,6 +6,7 @@ defvars $0000
     bank_palette ds.b 1             ; パレット
     bank_font ds.b 1                ; フォント画像
     bank_player ds.b 1              ; プレイヤ画像
+    bank_map01 ds.b 1               ; マップ画像(01)
 }
 
 ; アクションテーブル
@@ -63,5 +64,11 @@ defvars $c000
     player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
     player_wk ds.b 1                ; 攻撃モーションキープモード・フラグ
     player_wa ds.b actbl_size       ; 攻撃モーションキープ対象のアクションテーブル・レコード
+
+    map_top ds.b 1                  ; マップ描画基点（上）
+    map_left ds.b 1                 ; マップ描画基点（左）
+    map_sx ds.b 1                   ; マップスクロールX（-7〜7）
+    map_sy ds.b 1                   ; マップスクロールY（-7〜7）
+
     actbl_work ds.b 512             ; アクションテーブルの読み込み領域
 }

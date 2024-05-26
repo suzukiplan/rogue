@@ -78,6 +78,16 @@ player_move_update_vars_x:
     ld hl, (player_x)
     ld de, (player_vx)
     add hl, de
+    ld a, h
+    cp 8
+    jnc player_move_update_vars_x_check_right
+    ld hl, $0800
+    jr player_move_update_vars_x_set
+player_move_update_vars_x_check_right:
+    cp $E8
+    jc player_move_update_vars_x_set
+    ld hl, $E800
+player_move_update_vars_x_set:
     ld (player_x), hl
     ld a, h
     ld (PLAYER_OAM + oam_x), a
@@ -110,10 +120,19 @@ player_move_update_vars_y:
     ld hl, (player_y)
     ld de, (player_vy)
     add hl, de
+    ld a, h
+    cp 8
+    jnc player_move_update_vars_y_check_bottom
+    ld hl, $0800
+    jr player_move_update_vars_y_set
+player_move_update_vars_y_check_bottom:
+    cp $B8
+    jc player_move_update_vars_y_set
+    ld hl, $B800
+player_move_update_vars_y_set:
     ld (player_y), hl
     ld a, h
     ld (PLAYER_OAM + oam_y), a
-
     ld a, d
     and $80
     jnz player_move_update_vars_vy_add

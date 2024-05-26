@@ -9,6 +9,10 @@
 #define vdp_dpm_fg      $9F09
 #define vdp_dpm_sprite  $9F0A
 #define vdp_pattern     $A000
+#define vdp_scroll_bg_x $9F02
+#define vdp_scroll_bg_y $9F03
+#define vdp_scroll_fg_x $9F04
+#define vdp_scroll_fg_y $9F05
 
 .vdp_init
     call vdp_vsync_wait
@@ -47,8 +51,9 @@ vdp_vsync_wait_loop:
 ; 初期状態を font.chr にする
 .vdp_dpm_init
     push af
-    ld a, bank_font
+    ld a, bank_map01
     ld (vdp_dpm_bg), a
+    ld a, bank_font
     ld (vdp_dpm_fg), a
     ld (vdp_dpm_sprite), a
     pop af
@@ -116,6 +121,21 @@ vdp_cls_oam_loop:
 
 
 ; HLに指定された座標X,Y座標をBGのBGのネームテーブルアドレスへ変換
+.vdp_xy_to_bg_HL
+    push af
+    push bc
+    ld b, h
+    xor a
+    ld h, a
+vdp_xy_to_bg_HL_loop:
+    add hl, 32
+    djnz vdp_xy_to_bg_HL_loop
+    add hl, vdp_nametbl_bg
+    pop bc
+    pop af
+    ret
+
+; HLに指定された座標X,Y座標をFGのFGのネームテーブルアドレスへ変換
 .vdp_xy_to_fg_HL
     push af
     push bc
@@ -129,7 +149,6 @@ vdp_xy_to_fg_HL_loop:
     pop bc
     pop af
     ret
-
 
 ; FG へ $00 終端の文字列を表示
 ; h = X座標
@@ -169,7 +188,22 @@ vdp_print_fg_with_DEHL_end:
     pop af
     ret
 
-; BG へ signed 16bit (-32768 ~ 32767) の数字列を表示
+; FG へ unsigned 8bit (0 ~ 255) の数字列を表示
+; h = X座標
+; l = Y座標
+; a = 表示する数字列
+; hl に最後に書いた文字のアドレス+1 を返す
+.vdp_print_u8_with_AHL
+    push af
+    push bc
+    push de
+    call vdp_xy_to_fg_HL
+    ld b, 0
+    ld d, 0
+    ld e, a
+    jp vdp_print_s16_with_DEHL_put100
+
+; FG へ signed 16bit (-32768 ~ 32767) の数字列を表示
 ; h = X座標
 ; l = Y座標
 ; de = 表示する数字列

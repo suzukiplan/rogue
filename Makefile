@@ -22,8 +22,8 @@ tools_build:
 image/game.pkg: program.rom
 	${MAKEPKG} -o $@ -r program.rom
 
-program.rom: font.chr player.chr actbl.bin program.bin
-	${MAKEROM} program.rom program.bin actbl.bin palette.bin font.chr player.chr
+program.rom: font.chr player.chr map01.chr actbl.bin program.bin
+	${MAKEROM} program.rom program.bin actbl.bin palette.bin font.chr player.chr map01.chr
 
 program.bin: ${SOURCE}
 	z80asm -b src/main.asm -oprogram.bin.tmp
@@ -38,6 +38,9 @@ font.chr: ./graphic/font.bmp
 	${BMP2CHR} $< $@ palette.bin
 
 player.chr: ./graphic/player.bmp
+	${BMP2CHR} $< $@
+
+map01.chr: ./graphic/map01.bmp
 	${BMP2CHR} $< $@
 
 ${EMU}:
