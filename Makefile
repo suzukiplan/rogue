@@ -5,7 +5,7 @@ BMP2CHR = ./vgszero/tools/bmp2chr/bmp2chr
 EMU = ./vgszero/src/sdl2/vgs0
 
 all: tools_build image/game.pkg ${EMU}
-	${EMU} image/game.pkg
+	${EMU} -d image/game.pkg
 
 clean:
 	rm -f *.tmp
