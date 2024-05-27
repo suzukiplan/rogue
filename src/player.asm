@@ -60,6 +60,24 @@ player_render_refresh:
     pop af
     add l
     and $3F
+    ld b, a
+    ld a, (map_sx)
+    and $FF
+    jp m, player_calc_map_position_x_minus1
+    and $0F
+    jp nz, player_calc_map_position_x_plus1
+    ld a, b
+    jr player_calc_map_position_x_set
+player_calc_map_position_x_minus1:
+    ld a, b
+    dec a
+    and $3F
+    jr player_calc_map_position_x_set
+player_calc_map_position_x_plus1:
+    ld a, b
+    inc a
+    and $3F
+player_calc_map_position_x_set:
     ld (player_mx), a
 
     ; プレイヤのマップ上のY座標を求める
@@ -73,28 +91,25 @@ player_render_refresh:
     pop af
     add l
     and $3F
-    ld (player_my), a
-
-    ; プレイヤのマップ座標に足跡を描画
-    ld a, (player_my)
-    ld l, a
-    ld h, 64
-    ld a, $00
-    out ($C5), a
-    ld a, (player_mx)
-    add l
-    ld l, a
-    ld a, 0
-    adc h
+    ld b, a
+    ld a, (map_sy)
+    and $FF
+    jp m, player_calc_map_position_y_minus1
     and $0F
-    or $A0
-    ld h, a
-
-    ld a, $01
-    inc hl
-    add hl, 64
-    ld (hl), a
-    call map_render
+    jp nz, player_calc_map_position_y_plus1
+    ld a, b
+    jr player_calc_map_position_y_set
+player_calc_map_position_y_minus1:
+    ld a, b
+    dec a
+    and $3F
+    jr player_calc_map_position_y_set
+player_calc_map_position_y_plus1:
+    ld a, b
+    inc a
+    and $3F
+player_calc_map_position_y_set:
+    ld (player_my), a
     ret
 
 #include "player_move.asm"
