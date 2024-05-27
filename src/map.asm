@@ -274,25 +274,71 @@ map_generate_64x64_clear:
     and a
     jnz map_generate_64x64_clear
 
+    ; 8x8 毎に 2x2 の壁を描画
+    ld hl, $A000
+
+    ld c, 8
+map_generate_64x64_2x2_y:
+    ld b, 8
+map_generate_64x64_2x2_x:
+    push hl
+        add hl, 3 * 64 + 3
+        ld a, $02
+        ld (hl), a
+        inc hl
+        ld (hl), a
+        inc hl
+        ld a, $01
+        ld (hl), a
+        add hl, 62
+        ld a, $02
+        ld (hl), a
+        inc hl
+        ld (hl), a
+        inc hl
+        ld a, $01
+        ld (hl), a
+        add hl, 62
+        ld (hl), a
+        inc hl
+        ld (hl), a
+        inc hl
+        ld (hl), a
+    pop hl
+    add hl, 8
+    djnz map_generate_64x64_2x2_x
+    dec c
+    add hl, 7 * 64
+    jnz map_generate_64x64_2x2_y
+
+
     ; 壁 ($02) で上下を囲む
-    ld a, $02
     ld hl, $A000
     ld b, 64
 map_generate_64x64_wall_ud:
+    ld a, $02
     ld (hl), a
-    add hl, 64 * 63
+    add hl, 64
+    ld a, $01
+    ld (hl), a
+    add hl, 64 * 62
+    ld a, $02
     ld (hl), a
     add hl, -(64 * 63)
     inc hl
     djnz map_generate_64x64_wall_ud
 
     ; 壁 ($02) で左右を囲む
-    ld a, $02
-    ld hl, $A000
-    ld b, 64
+    ld hl, $A000 + 64
+    ld b, 62
 map_generate_64x64_wall_lr:
+    ld a, $02
     ld (hl), a
-    add hl, 63
+    inc hl
+    ld a, $01
+    ld (hl), a
+    add hl, 62
+    ld a, $02
     ld (hl), a
     inc hl
     djnz map_generate_64x64_wall_lr
