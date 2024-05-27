@@ -65,7 +65,7 @@ defvars $c000
     player_wi ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス
     player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
     player_wk ds.b 1                ; 攻撃モーションキープモード・フラグ
-    player_wa ds.b actbl_size       ; 攻撃モーションキープ対象のアクションテーブル・レコード
+    player_wa ds.b actbl_size * 2   ; 攻撃モーションキープ対象のアクションテーブル・レコード
 
     map_top ds.b 1                  ; マップ描画基点（上）
     map_left ds.b 1                 ; マップ描画基点（左）

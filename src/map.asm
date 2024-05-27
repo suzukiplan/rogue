@@ -161,7 +161,7 @@ map_adjust_left_render:
 
     ; プレイヤ座標補正
     push af
-    ld a, 207
+    ld a, 208
     ld (player_x + 1), a
     pop af
 
