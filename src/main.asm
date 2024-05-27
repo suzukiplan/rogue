@@ -16,6 +16,7 @@ main_loop:
     call player_move                ; 自機の移動
     call player_attack              ; 自機の攻撃（アイテム使用）
     call map_adjust                 ; マップ位置の調整
+    call player_calc_map_position   ; マップ上のプレイヤ座標を算出
     call print_debug                ; デバッグ情報を表示
     jr main_loop
 
@@ -28,12 +29,12 @@ main_loop:
     ld de, hello
     call vdp_print_fg_with_DEHL
 
-    ; 現在のVXを表示
+    ; 現在のXを表示
     ld hl, $0302
     ld de, str_vx
     call vdp_print_fg_with_DEHL
-    ld a, (map_top)
-    ld hl, $030B
+    ld a, (player_mx)
+    ld hl, $0305
     call vdp_print_u8_with_AHL
     add hl, $0400
     xor a
@@ -41,12 +42,12 @@ main_loop:
     inc hl
     ld (hl), a
 
-    ; 現在のVYを表示
+    ; 現在のYを表示
     ld hl, $0402
     ld de, str_vy
     call vdp_print_fg_with_DEHL
-    ld a, (map_left)
-    ld hl, $040B
+    ld a, (player_my)
+    ld hl, $0405
     call vdp_print_u8_with_AHL
     add hl, $0400
     xor a
@@ -56,8 +57,9 @@ main_loop:
     ret
 
 hello: db "ROGUE LIKE A.RPG PROTOTYPE", 0
-str_vx: db "MAP  TOP:",0
-str_vy: db "MAP LEFT:",0
+str_vx: db "X:",0
+str_vy: db "Y:",0
+comma: db ",",0
 
 #include "vars.asm"
 #include "vdp.asm"

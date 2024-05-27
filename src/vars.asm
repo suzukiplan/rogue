@@ -58,6 +58,8 @@ defvars $c000
     player_y ds.w 1                 ; プレイヤY座標（実数）
     player_vx ds.w 1                ; プレイヤX移動量（実数）
     player_vy ds.w 1                ; プレイヤX移動量（実数）
+    player_mx ds.b 1                ; プレイヤマップ座標系X
+    player_my ds.b 1                ; プレイヤマップ座標系Y
     player_wf ds.b 1                ; プレイヤ攻撃アクションフラグ
     player_wp ds.w 1                ; プレイヤ攻撃アクションテーブルのポインタ
     player_wi ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス

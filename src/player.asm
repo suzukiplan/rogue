@@ -48,5 +48,31 @@ player_render_refresh:
     ld (hl), a
     ret
 
+.player_calc_map_position
+    ld a, (map_left)
+    push af
+    ld a, (player_x + 1)
+    ld h, a
+    ld l, 8
+    ld a, $01
+    out ($C5), a
+    pop af
+    add l
+    and $3F
+    ld (player_mx), a
+
+    ld a, (map_top)
+    push af
+    ld a, (player_y + 1)
+    ld h, a
+    ld l, 8
+    ld a, $01
+    out ($C5), a
+    pop af
+    add l
+    and $3F
+    ld (player_my), a
+    ret
+
 #include "player_move.asm"
 #include "player_attack.asm"
