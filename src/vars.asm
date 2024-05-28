@@ -65,10 +65,13 @@ defvars $c000
     joypad_prev ds.b 1              ; 直前フレームのジョイパッド
     player_an ds.b 1                ; プレイヤのアニメーションカウンタ
     player_dir ds.b 1               ; プレイヤの向き
+    player_hit ds.b 1               ; 当たり判定
     player_x ds.w 1                 ; プレイヤX座標（実数）
     player_y ds.w 1                 ; プレイヤY座標（実数）
     player_vx ds.w 1                ; プレイヤX移動量（実数）
     player_vy ds.w 1                ; プレイヤX移動量（実数）
+    player_lx ds.w 1                ; プレイヤX移動量ログ（実数）
+    player_ly ds.w 1                ; プレイヤX移動量ログ（実数）
     player_mx ds.b 1                ; プレイヤマップ座標系X
     player_my ds.b 1                ; プレイヤマップ座標系Y
     player_wf ds.b 1                ; プレイヤ攻撃アクションフラグ

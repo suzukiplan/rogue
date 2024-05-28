@@ -14,10 +14,10 @@ main_loop:
     call vdp_vsync_wait             ; 垂直動機
     call joypad_update              ; ジョイパッド入力を更新（joypad, joypad_prev）
     call player_move                ; 自機の移動
-    call player_attack              ; 自機の攻撃（アイテム使用）
     call map_adjust                 ; マップ位置の調整
     call player_calc_map_position   ; マップ上のプレイヤ座標を算出
     call player_hitchk_map          ; マップとプレイヤの当たり判定
+    call player_attack              ; 自機の攻撃（アイテム使用）
     call print_debug                ; デバッグ情報を表示
     jr main_loop
 

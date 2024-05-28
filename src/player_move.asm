@@ -1,4 +1,9 @@
 .player_move
+    xor a
+    ld (player_lx), a
+    ld (player_lx + 1), a
+    ld (player_ly), a
+    ld (player_ly + 1), a
     ld a, (joypad)
     ld b, a
     and %10000000
@@ -77,6 +82,7 @@ player_move_animate_end:
 player_move_update_vars_x:
     ld hl, (player_x)
     ld de, (player_vx)
+    ld (player_lx), de
     add hl, de
     ld a, h
     cp 8
@@ -119,6 +125,7 @@ player_move_update_vars_vx_add_end:
 player_move_update_vars_y:
     ld hl, (player_y)
     ld de, (player_vy)
+    ld (player_ly), de
     add hl, de
     ld a, h
     cp 8
