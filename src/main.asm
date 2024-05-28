@@ -54,6 +54,40 @@ main_loop:
     ld (hl), a
     inc hl
     ld (hl), a
+
+    ; 当たり判定枠を表示
+    ld a, (player_mx)
+    ld hl, map_left
+    sub (hl)
+    ld h, 8
+    ld l, a
+    ld a, 0
+    out ($C5), a
+    ld a, l
+    ld hl, map_sx
+    sub (hl)
+    ld ($9000 + si_debug * oam_size + oam_x), a
+    ld a, (player_my)
+    ld hl, map_top
+    sub (hl)
+    ld h, 8
+    ld l, a
+    ld a, 0
+    out ($C5), a
+    ld a, l
+    ld hl, map_sy
+    sub (hl)
+    ld ($9000 + si_debug * oam_size + oam_y), a
+    ld a, $80
+    ld ($9000 + si_debug * oam_size + oam_attr), a
+    ld a, $DD
+    ld ($9000 + si_debug * oam_size + oam_ptn), a
+    ld a, 2
+    ld ($9000 + si_debug * oam_size + oam_width), a
+    ld ($9000 + si_debug * oam_size + oam_height), a
+    ld a, bank_player
+    ld ($9000 + si_debug * oam_size + oam_bank), a
+
     ret
 
 hello: db "ROGUE LIKE A.RPG PROTOTYPE", 0

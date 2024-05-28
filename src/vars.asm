@@ -31,6 +31,7 @@ defvars $0000
     si_weapon0 ds.b 1               ; プレイヤより描画優先度が高い武器
     si_player ds.b 1                ; プレイヤ
     si_weapon1 ds.b 1               ; プレイヤより描画優先度が低い武器
+    si_debug ds.b 1                 ; 当たり判定目安ガイド
 }
 
 ; OAM レコード定義
