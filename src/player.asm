@@ -50,65 +50,31 @@ player_render_refresh:
 
 .player_calc_map_position
     ; プレイヤのマップ上のX座標を求める
-    ld a, (map_left)
-    push af
     ld a, (player_x + 1)
+    ld hl, map_sx
+    add (hl)
     ld h, a
     ld l, 8
     ld a, $01
     out ($C5), a
-    pop af
-    add l
+    ld a, l
+    ld hl, map_left
+    add (hl)
     and $3F
-    ld b, a
-    ld a, (map_sx)
-    and $FF
-    jp m, player_calc_map_position_x_minus1
-    and $0F
-    jp nz, player_calc_map_position_x_plus1
-    ld a, b
-    jr player_calc_map_position_x_set
-player_calc_map_position_x_minus1:
-    ld a, b
-    dec a
-    and $3F
-    jr player_calc_map_position_x_set
-player_calc_map_position_x_plus1:
-    ld a, b
-    inc a
-    and $3F
-player_calc_map_position_x_set:
     ld (player_mx), a
 
     ; プレイヤのマップ上のY座標を求める
-    ld a, (map_top)
-    push af
     ld a, (player_y + 1)
+    ld hl, map_sy
+    add (hl)
     ld h, a
     ld l, 8
     ld a, $01
     out ($C5), a
-    pop af
-    add l
+    ld a, l
+    ld hl, map_top
+    add (hl)
     and $3F
-    ld b, a
-    ld a, (map_sy)
-    and $FF
-    jp m, player_calc_map_position_y_minus1
-    and $0F
-    jp nz, player_calc_map_position_y_plus1
-    ld a, b
-    jr player_calc_map_position_y_set
-player_calc_map_position_y_minus1:
-    ld a, b
-    dec a
-    and $3F
-    jr player_calc_map_position_y_set
-player_calc_map_position_y_plus1:
-    ld a, b
-    inc a
-    and $3F
-player_calc_map_position_y_set:
     ld (player_my), a
     ret
 
