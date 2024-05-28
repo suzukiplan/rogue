@@ -80,3 +80,4 @@ player_render_refresh:
 
 #include "player_move.asm"
 #include "player_attack.asm"
+#include "player_hitchk_map.asm"

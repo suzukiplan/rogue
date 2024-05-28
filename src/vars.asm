@@ -48,6 +48,16 @@ defvars $0000
     oam_size    ds.b 1
 }
 
+; 矩形データ定義
+defvars $0000
+{
+    rect_x ds.b 1
+    rect_y ds.b 1
+    rect_width ds.b 1
+    rect_height ds.b 1
+    rect_size ds.b 1
+}
+
 ; グローバル変数
 defvars $c000
 {
@@ -73,5 +83,6 @@ defvars $c000
     map_sx ds.b 1                   ; マップスクロールX（-7〜7）
     map_sy ds.b 1                   ; マップスクロールY（-7〜7）
 
+    hitchk_work ds.b rect_size * 2  ; 当たり判定用ワークエリア
     actbl_work ds.b 512             ; アクションテーブルの読み込み領域
 }

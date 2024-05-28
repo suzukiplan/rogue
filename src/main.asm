@@ -17,6 +17,7 @@ main_loop:
     call player_attack              ; 自機の攻撃（アイテム使用）
     call map_adjust                 ; マップ位置の調整
     call player_calc_map_position   ; マップ上のプレイヤ座標を算出
+    call player_hitchk_map          ; マップとプレイヤの当たり判定
     call print_debug                ; デバッグ情報を表示
     jr main_loop
 
@@ -70,6 +71,7 @@ main_loop:
     ld a, (player_my)
     ld hl, map_top
     sub (hl)
+    inc a
     ld h, 8
     ld l, a
     ld a, 0
@@ -84,6 +86,7 @@ main_loop:
     ld ($9000 + si_debug * oam_size + oam_ptn), a
     ld a, 2
     ld ($9000 + si_debug * oam_size + oam_width), a
+    ld a, 1
     ld ($9000 + si_debug * oam_size + oam_height), a
     ld a, bank_player
     ld ($9000 + si_debug * oam_size + oam_bank), a

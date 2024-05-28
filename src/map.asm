@@ -263,7 +263,7 @@ map_render_loopX:
     ld hl, $A000
     ld bc, $2000
 map_generate_64x64_clear:
-    ld a, $03
+    ld a, $02
     ld (hl), a
     inc hl
     dec bc
@@ -283,7 +283,7 @@ map_generate_64x64_2x2_y:
 map_generate_64x64_2x2_x:
     push hl
         add hl, 3 * 64 + 3
-        ld a, $02
+        ld a, $80
         ld (hl), a
         inc hl
         ld (hl), a
@@ -291,7 +291,7 @@ map_generate_64x64_2x2_x:
         ld a, $01
         ld (hl), a
         add hl, 62
-        ld a, $02
+        ld a, $80
         ld (hl), a
         inc hl
         ld (hl), a
@@ -312,33 +312,33 @@ map_generate_64x64_2x2_x:
     jnz map_generate_64x64_2x2_y
 
 
-    ; 壁 ($02) で上下を囲む
+    ; 壁 ($80) で上下を囲む
     ld hl, $A000
     ld b, 64
 map_generate_64x64_wall_ud:
-    ld a, $02
+    ld a, $80
     ld (hl), a
     add hl, 64
     ld a, $01
     ld (hl), a
     add hl, 64 * 62
-    ld a, $02
+    ld a, $80
     ld (hl), a
     add hl, -(64 * 63)
     inc hl
     djnz map_generate_64x64_wall_ud
 
-    ; 壁 ($02) で左右を囲む
+    ; 壁 ($80) で左右を囲む
     ld hl, $A000 + 64
     ld b, 62
 map_generate_64x64_wall_lr:
-    ld a, $02
+    ld a, $80
     ld (hl), a
     inc hl
     ld a, $01
     ld (hl), a
     add hl, 62
-    ld a, $02
+    ld a, $80
     ld (hl), a
     inc hl
     djnz map_generate_64x64_wall_lr
