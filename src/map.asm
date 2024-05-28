@@ -1,8 +1,13 @@
 .map_adjust
+    xor a
+    ld (map_refresh), a
     call map_adjust_top
     call map_adjust_bottom
     call map_adjust_left
     call map_adjust_right
+    ld a, (map_refresh)
+    and a
+    call nz, map_render
     ret
 
 .map_adjust_top
@@ -51,7 +56,8 @@
     ld (map_sy), a
     ld (vdp_scroll_bg_y), a
 map_adjust_top_render:
-    call map_render
+    ld hl, map_refresh
+    inc (hl)
     ret
 
 .map_adjust_bottom
@@ -99,7 +105,8 @@ map_adjust_top_render:
     ld (map_sy), a
     ld (vdp_scroll_bg_y), a
 map_adjust_bottom_render:
-    call map_render
+    ld hl, map_refresh
+    inc (hl)
     ret
 
 .map_adjust_left
@@ -147,7 +154,8 @@ map_adjust_bottom_render:
     ld (map_sx), a
     ld (vdp_scroll_bg_x), a
 map_adjust_left_render:
-    call map_render
+    ld hl, map_refresh
+    inc (hl)
     ret
 
 .map_adjust_right
@@ -195,7 +203,8 @@ map_adjust_left_render:
     ld (map_sx), a
     ld (vdp_scroll_bg_x), a
 map_adjust_right_render:
-    call map_render
+    ld hl, map_refresh
+    inc (hl)
     ret
 
 .map_render_init

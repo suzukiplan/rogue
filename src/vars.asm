@@ -85,6 +85,7 @@ defvars $c000
     map_left ds.b 1                 ; マップ描画基点（左）
     map_sx ds.b 1                   ; マップスクロールX（-7〜7）
     map_sy ds.b 1                   ; マップスクロールY（-7〜7）
+    map_refresh ds.b 1              ; マップ再描画フラグ
 
     hitchk_work ds.b rect_size * 2  ; 当たり判定用ワークエリア
     actbl_work ds.b 512             ; アクションテーブルの読み込み領域
