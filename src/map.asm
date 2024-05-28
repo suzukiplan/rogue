@@ -218,7 +218,6 @@ map_render_init_attr:
     ld a, c
     and a
     jnz map_render_init_attr
-    call map_render
 
 .map_render
     ld a, (map_top)
