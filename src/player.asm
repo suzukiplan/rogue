@@ -128,7 +128,7 @@ player_map_limit_check_right:
     ld a, (player_x + 1)
     cp 232
     ret c
-    nop ; TODO: 右区画への移動
+    call map_scroll_right
     ret
 
 #include "player_move.asm"
