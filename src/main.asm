@@ -35,8 +35,7 @@ main_loop:
     ld hl, $0302
     ld de, str_vx
     call vdp_print_fg_with_DEHL
-    in a, ($B4)
-    and $0F
+    ld a, (map_left)
     ld hl, $0306
     call vdp_print_u8_with_AHL
     add hl, $0400
@@ -49,12 +48,7 @@ main_loop:
     ld hl, $0402
     ld de, str_vy
     call vdp_print_fg_with_DEHL
-    in a, ($B4)
-    and $F0
-    rrca
-    rrca
-    rrca
-    rrca
+    ld a, (map_top)
     ld hl, $0406
     call vdp_print_u8_with_AHL
     add hl, $0400

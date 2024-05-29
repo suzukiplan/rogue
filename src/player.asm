@@ -107,7 +107,7 @@ player_map_limit_check_up:
     ld a, (player_y + 1)
     and a
     ret nz
-    nop ; TODO: 上区画への移動
+    call map_scroll_top
     ret
 
 player_map_limit_check_down:
