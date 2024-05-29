@@ -272,3 +272,95 @@ map_scroll_top_bg_loop:
     add 8
     ld (vdp_oam_addr + oam_size * si_weapon1 + oam_y), a
     ret
+
+.map_scroll_bottom
+    in a, ($B4)
+    ld b, a
+    and $0F
+    ld c, a
+    ld a, b
+    add $10
+    and $F0
+    or c
+    out ($B4), a
+
+    ld b, 23
+    ld hl, vdp_scroll_bg_y
+    xor a
+    ld (map_top), a
+map_scroll_bottom_loop:
+    call map_scroll_bottom_bg
+    call map_scroll_bottom_sp
+    call vdp_vsync_wait
+    djnz map_scroll_bottom_loop
+    call map_scroll_bottom_bg
+    call vdp_vsync_wait
+    xor a
+    ld (vdp_scroll_bg_y), a
+    ld a, 63
+    ld (map_top), a
+    call map_render
+    ret
+
+.map_scroll_bottom_bg
+    push bc
+    push hl
+    ld a, (hl)
+    add 8
+    ld (hl), a
+    ld a, (map_top)
+    ld l, a
+    ld h, 64
+    ld a, $00
+    out ($C5), a
+    ld a, h
+    or $A0
+    ld h, a
+    ld a, (map_left)
+    add l
+    ld l, a
+    ld a, 0
+    adc h
+    ld h, a
+
+    push hl
+    ld a, (map_top)
+    inc a
+    and $3F
+    ld (map_top), a
+    add 24
+    and $1F
+    ld l, a
+    ld h, 32
+    xor a
+    out ($C5), a
+    ld de, vdp_nametbl_bg
+    add hl, de
+    ld de, hl
+    pop hl
+
+    ld b, 32
+map_scroll_bottom_bg_loop:
+    ld a, (hl)
+    ld (de), a
+    inc hl
+    inc de
+    djnz map_scroll_bottom_bg_loop
+    pop hl
+    pop bc
+    ret
+
+.map_scroll_bottom_sp
+    ld a, (vdp_oam_addr + oam_size * si_player + oam_y)
+    sub 8
+    ld (vdp_oam_addr + oam_size * si_player + oam_y), a
+    ld a, (player_y + 1)
+    sub 8
+    ld (player_y + 1), a
+    ld a, (vdp_oam_addr + oam_size * si_weapon0 + oam_y)
+    sub 8
+    ld (vdp_oam_addr + oam_size * si_weapon0 + oam_y), a
+    ld a, (vdp_oam_addr + oam_size * si_weapon1 + oam_y)
+    sub 8
+    ld (vdp_oam_addr + oam_size * si_weapon1 + oam_y), a
+    ret
