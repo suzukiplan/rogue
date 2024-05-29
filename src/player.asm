@@ -121,7 +121,7 @@ player_map_limit_check_left:
     ld a, (player_x + 1)
     cp 9
     ret nc
-    nop ; TODO: 左区画への移動
+    call map_scroll_left
     ret
 
 player_map_limit_check_right:
