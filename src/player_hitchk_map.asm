@@ -138,6 +138,7 @@ player_hitchk_map_check_both:
     ld d, a
     ld a, (player_my)
     inc a
+    and $3F
     ld e, a
     call player_hitchk_map_execute
     push af
@@ -154,6 +155,9 @@ player_hitchk_map_check_both:
 
     ; 中央上との衝突判定
     inc d
+    ld a, d
+    and $3F
+    ld d, a
     call player_hitchk_map_execute
     push af
     push de
@@ -170,6 +174,9 @@ player_hitchk_map_check_both:
 
     ; 右上との衝突判定
     inc d
+    ld a, d
+    and $3F
+    ld d, a
     call player_hitchk_map_execute
     push af
     push de
@@ -187,6 +194,9 @@ player_hitchk_map_check_both:
 
     ; 右下との衝突判定
     inc e
+    ld a, e
+    and $3F
+    ld e, a
     call player_hitchk_map_execute
     push af
     push de
@@ -205,6 +215,9 @@ player_hitchk_map_check_both:
 
     ; 下中央との衝突判定
     dec d
+    ld a, d
+    and $3F
+    ld d, a
     call player_hitchk_map_execute
     push af
     push de
@@ -224,6 +237,9 @@ player_hitchk_map_check_both:
 
     ; 左下との衝突判定
     dec d
+    ld a, d
+    and $3F
+    ld d, a
     call player_hitchk_map_execute
     push af
     push de
