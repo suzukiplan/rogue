@@ -266,6 +266,17 @@ map_render_loopX:
     jnz map_render_loopY
     ret
 
+.map_generate
+    xor a
+    out ($B4), a
+    call map_generate_64x64
+    ld a, $01
+map_generate_loop:
+    out ($B5), a
+    inc a
+    jnz map_generate_loop
+    ret
+
 .map_generate_64x64
     ; ゼロクリア
     ld hl, $A000

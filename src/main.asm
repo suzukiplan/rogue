@@ -6,8 +6,8 @@ org $0000
     di                              ; 割り込みは一切使わない
     ld sp, $0000                    ; スタックは 0xFFFF から使う
     call vdp_init                   ; 映像初期化
+    call map_generate               ; テスト用のマップ生成
     call player_init                ; プレイヤの座標初期化
-    call map_generate_64x64         ; テスト用のマップ生成
     call map_render_init            ; 初期マップを描画
 
 main_loop:
