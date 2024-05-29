@@ -12,9 +12,7 @@
     ld d, 1
     ld hl, (player_lx)
     ld a, h
-    and a
-    jnz player_hitchk_map_lx_not_zero
-    ld a, l
+    or l
     and a
     jnz player_hitchk_map_lx_not_zero
     ld d, 0
@@ -24,9 +22,7 @@ player_hitchk_map_lx_not_zero:
     ld e, 1
     ld hl, (player_ly)
     ld a, h
-    and a
-    jnz player_hitchk_map_ly_not_zero
-    ld a, l
+    or l
     and a
     jnz player_hitchk_map_ly_not_zero
     ld e, 0
