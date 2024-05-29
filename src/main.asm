@@ -56,6 +56,7 @@ main_loop:
     inc hl
     ld (hl), a
 
+    ret
     ; 当たり判定枠を表示
     ld a, (player_mx)
     ld hl, map_left

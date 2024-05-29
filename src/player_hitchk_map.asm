@@ -141,13 +141,6 @@ player_hitchk_map_check_both:
     and $3F
     ld e, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 0
-    ld e, 1
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     ld hl, player_hit
     or (hl)
@@ -159,13 +152,6 @@ player_hitchk_map_check_both:
     and $3F
     ld d, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 1
-    ld e, 1
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     rlca
     ld hl, player_hit
@@ -178,13 +164,6 @@ player_hitchk_map_check_both:
     and $3F
     ld d, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 2
-    ld e, 1
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     rlca
     rlca
@@ -198,13 +177,6 @@ player_hitchk_map_check_both:
     and $3F
     ld e, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 2
-    ld e, 2
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     rlca
     rlca
@@ -219,13 +191,6 @@ player_hitchk_map_check_both:
     and $3F
     ld d, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 1
-    ld e, 2
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     rlca
     rlca
@@ -241,13 +206,6 @@ player_hitchk_map_check_both:
     and $3F
     ld d, a
     call player_hitchk_map_execute
-    push af
-    push de
-    ld d, 0
-    ld e, 2
-    call player_hitchk_map_debug
-    pop de
-    pop af
     and $01
     rlca
     rlca
@@ -307,27 +265,6 @@ player_hitchk_map_execute:
     ; 当たり判定を実行
     ld hl, hitchk_work
     in a, ($C4)
-    ret
-
-.player_hitchk_map_debug
-    add '0'
-    push af
-    ld hl, vdp_nametbl_fg + 6 * 32 + 3
-    ld a, d
-    add l
-    ld l, a
-    ld a, 0
-    adc h
-    ld h, a
-    ld b, e
-player_hitchk_map_debug_loop:
-    add hl, 32
-    djnz player_hitchk_map_debug_loop
-    pop af
-    ld (hl), a
-    add hl, $400
-    ld a, $80
-    ld (hl), a
     ret
 
 .player_hitchk_map_hoseiY
