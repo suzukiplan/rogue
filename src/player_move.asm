@@ -124,9 +124,16 @@ player_move_update_vars_vx_add_end:
 
 player_move_update_vars_y:
     ld hl, (player_y)
+    ld b, h
     ld de, (player_vy)
     ld (player_ly), de
     add hl, de
+    jc player_move_update_vars_y_do
+    ld a, (player_vy + 1)
+    and $80
+    jz player_move_update_vars_y_do
+    ld hl, $0000
+player_move_update_vars_y_do:
     ld (player_y), hl
     ld a, h
     ld (PLAYER_OAM + oam_y), a

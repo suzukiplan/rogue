@@ -7,13 +7,14 @@ org $0000
     ld sp, $0000                    ; スタックは 0xFFFF から使う
     call vdp_init                   ; 映像初期化
     call player_init                ; プレイヤの座標初期化
-    call map_generate_64x64
-    call map_render_init
+    call map_generate_64x64         ; テスト用のマップ生成
+    call map_render_init            ; 初期マップを描画
 
 main_loop:
     call vdp_vsync_wait             ; 垂直動機
     call joypad_update              ; ジョイパッド入力を更新（joypad, joypad_prev）
     call player_move                ; 自機の移動
+    call player_map_limit_check     ; 自機のマップ移動境界チェック
     call map_adjust                 ; マップ位置の調整
     call player_calc_map_position   ; マップ上のプレイヤ座標を算出
     call player_hitchk_map          ; マップとプレイヤの当たり判定
