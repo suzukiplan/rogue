@@ -319,11 +319,19 @@ map_generate_64x64_2x2_x:
     add hl, 7 * 64
     jnz map_generate_64x64_2x2_y
 
-
     ; 壁 ($80) で上下を囲む
     ld hl, $A000
     ld b, 64
 map_generate_64x64_wall_ud:
+    ld a, b
+    cp 30
+    jz map_generate_64x64_wall_ud_skip
+    cp 31
+    jz map_generate_64x64_wall_ud_skip
+    cp 32
+    jz map_generate_64x64_wall_ud_skip
+    cp 33
+    jz map_generate_64x64_wall_ud_skip
     ld a, $80
     ld (hl), a
     add hl, 64
@@ -335,11 +343,34 @@ map_generate_64x64_wall_ud:
     add hl, -(64 * 63)
     inc hl
     djnz map_generate_64x64_wall_ud
+    jr map_generate_64x64_wall_ud_end
+map_generate_64x64_wall_ud_skip:
+    ld a, $02
+    ld (hl), a
+    add hl, 64
+    ld a, $02
+    ld (hl), a
+    add hl, 64 * 62
+    ld a, $02
+    ld (hl), a
+    add hl, -(64 * 63)
+    inc hl
+    djnz map_generate_64x64_wall_ud
+map_generate_64x64_wall_ud_end:
 
     ; 壁 ($80) で左右を囲む
     ld hl, $A000 + 64
     ld b, 62
 map_generate_64x64_wall_lr:
+    ld a, b
+    cp 29
+    jz map_generate_64x64_wall_lr_skip02
+    cp 30
+    jz map_generate_64x64_wall_lr_skip02
+    cp 31
+    jz map_generate_64x64_wall_lr_skip02
+    cp 32
+    jz map_generate_64x64_wall_lr_skip01
     ld a, $80
     ld (hl), a
     inc hl
@@ -347,6 +378,30 @@ map_generate_64x64_wall_lr:
     ld (hl), a
     add hl, 62
     ld a, $80
+    ld (hl), a
+    inc hl
+    djnz map_generate_64x64_wall_lr
+    ret
+map_generate_64x64_wall_lr_skip01:
+    ld a, $01
+    ld (hl), a
+    inc hl
+    ld a, $01
+    ld (hl), a
+    add hl, 62
+    ld a, $01
+    ld (hl), a
+    inc hl
+    djnz map_generate_64x64_wall_lr
+    ret
+map_generate_64x64_wall_lr_skip02:
+    ld a, $02
+    ld (hl), a
+    inc hl
+    ld a, $02
+    ld (hl), a
+    add hl, 62
+    ld a, $02
     ld (hl), a
     inc hl
     djnz map_generate_64x64_wall_lr
