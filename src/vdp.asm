@@ -174,7 +174,7 @@ vdp_print_fg_with_DEHL_loopW:
 
     ; 属性更新
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -224,7 +224,7 @@ vdp_print_fg_with_DEHL_end:
 
     ; 属性更新
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -253,7 +253,7 @@ vdp_print_s16_with_DEHL_put10k:
     add '0'
     ld (hl), a
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -283,7 +283,7 @@ vdp_print_s16_with_DEHL_put1k_do:
     add '0'
     ld (hl), a
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -312,7 +312,7 @@ vdp_print_s16_with_DEHL_put100_do:
     add '0'
     ld (hl), a
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -339,7 +339,7 @@ vdp_print_s16_with_DEHL_put10_do:
     add '0'
     ld (hl), a
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 
@@ -355,7 +355,7 @@ vdp_print_s16_with_DEHL_put1:
     add '0'
     ld (hl), a
     add hl, $0400
-    ld a, $80
+    ld a, $85
     ld (hl), a
     add hl, -$03FF
 

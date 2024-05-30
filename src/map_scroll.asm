@@ -16,6 +16,7 @@
 map_scroll_left_loop:
     call map_scroll_left_bg
     call map_scroll_left_sp
+    call status_update_safe
     call vdp_vsync_wait
     djnz map_scroll_left_loop
 
@@ -105,6 +106,7 @@ map_scroll_left_bg_loop:
 map_scroll_right_loop:
     call map_scroll_right_bg
     call map_scroll_right_sp
+    call status_update_safe
     call vdp_vsync_wait
     djnz map_scroll_right_loop
 

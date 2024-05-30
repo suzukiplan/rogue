@@ -22,14 +22,14 @@ tools_build:
 image/game.pkg: program.rom
 	${MAKEPKG} -o $@ -r program.rom
 
-program.rom: font.chr player.chr map01.chr actbl.bin program.bin
-	${MAKEROM} program.rom program.bin actbl.bin palette.bin font.chr player.chr map01.chr
+program.rom: font.chr player.chr map01.chr status.chr actbl.bin program.bin
+	${MAKEROM} program.rom program.bin actbl.bin palette.bin font.chr status.chr player.chr map01.chr
 
 program.bin: ${SOURCE}
 	z80asm -b src/main.asm -oprogram.bin.tmp
 	dd bs=32768 conv=sync if=program.bin.tmp of=program.bin
 
-actbl.bin: src/actbl.asm
+actbl.bin: src/actbl.asm src/vars.asm
 	z80asm -b src/actbl.asm -oactbl.bin.tmp
 	dd bs=8192 conv=sync if=actbl.bin.tmp of=actbl.bin
 	tools/actbl actbl.bin >src/actbl_define.asm
@@ -41,6 +41,9 @@ player.chr: ./graphic/player.bmp
 	${BMP2CHR} $< $@
 
 map01.chr: ./graphic/map01.bmp
+	${BMP2CHR} $< $@
+
+status.chr: ./graphic/status.bmp
 	${BMP2CHR} $< $@
 
 ${EMU}:

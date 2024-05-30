@@ -5,6 +5,7 @@ defvars $0000
     bank_actbl ds.b 1               ; アクションテーブル
     bank_palette ds.b 1             ; パレット
     bank_font ds.b 1                ; フォント画像
+    bank_status ds.b 1              ; ステータスウィンドウ
     bank_player ds.b 1              ; プレイヤ画像
     bank_map01 ds.b 1               ; マップ画像(01)
 }
@@ -86,6 +87,10 @@ defvars $c000
     map_sx ds.b 1                   ; マップスクロールX（-7〜7）
     map_sy ds.b 1                   ; マップスクロールY（-7〜7）
     map_refresh ds.b 1              ; マップ再描画フラグ
+
+    status_pos ds.b 1               ; ステータスウィンドウの座標（0〜31）
+    status_tag ds.b 1               ; ステータスウィンドウの目標座標（0〜31）
+    status_dir ds.b 1               ; 移動フラグ（00: 移動なし, 01: 右方向へ移動, FF: 左方向へ移動）
 
     hitchk_work ds.b rect_size * 2  ; 当たり判定用ワークエリア
     actbl_work ds.b 512             ; アクションテーブルの読み込み領域
