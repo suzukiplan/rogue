@@ -21,6 +21,7 @@ main_loop:
     call player_hitchk_map          ; マップとプレイヤの当たり判定
     call player_attack              ; 自機の攻撃（アイテム使用）
     call status_update              ; ステータスウィンドウの表示更新
+    call status_toggle              ; ステータスウィンドウの表示・非表示を切り替え
     jr main_loop
 
 .end:
