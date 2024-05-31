@@ -13,6 +13,8 @@ map_generate_loop:
     call map_generate_64x64d
     xor a
     out ($B4), a
+
+    call mapgen1
     ret
 
 .map_generate_64x64

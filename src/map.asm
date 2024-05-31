@@ -2,3 +2,5 @@
 #include "map_render.asm"
 #include "map_generate.asm"
 #include "map_scroll.asm"
+#include "mapgen.asm"
+#include "mapgen1.asm"
