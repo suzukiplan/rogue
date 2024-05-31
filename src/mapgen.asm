@@ -1,3 +1,34 @@
+; HL に指定されたマップ座標系をアドレス形式に変換（HL以外のレジスタは変えない）
+.mangen_xy_to_addr_with_HL
+    push af
+
+    ; 範囲外を指定できないようにしておく
+    ld a, h
+    and $3F
+    ld h, a
+    ld a, l
+    and $3F
+    ld l, a
+
+    ; X,Y を マップアドレスに変換
+    push bc
+    ld b, h
+    ld h, 64
+    xor a
+    out ($C5), a ; HL = L * 64
+    ld a, b
+    pop bc
+    add l
+    ld l, a
+    ld a, 0
+    adc h
+    or $A0
+    ld h, a
+
+    pop af
+    ret
+
+
 ; BC から描画基点アドレスを HL に求める
 ; B = 埋める基点X座標（0〜63）
 ; C = 埋める基点Y座標（0〜63）
@@ -188,4 +219,21 @@ mapgen_make_room_retry4:
     ld a, c
     add e
     ld c, a
+    ret
+
+; 指定されたマップ座標のチップパターンを取得（Aに返す）
+; H = 基点X座標（0〜63）
+; L = 基点Y座標（0〜63）
+mapgen_get_chip:
+    call mangen_xy_to_addr_with_HL
+    ld a, (hl)
+    ret
+
+; 指定されたマップ座標にチップパターンを書き込む
+; A = 書き込むチップパターン
+; H = 基点X座標（0〜63）
+; L = 基点Y座標（0〜63）
+mapgen_set_chip:
+    call mangen_xy_to_addr_with_HL
+    ld (hl), a
     ret

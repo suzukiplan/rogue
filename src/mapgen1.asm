@@ -10,7 +10,7 @@
     ld de, bc             ; 中央座標を DE へ保持
 
     ; 2つ目以降の部屋を作成
-    ld b, 5
+    ld b, 8
 mapgen1_loop:
     push bc
     push de
@@ -23,11 +23,62 @@ mapgen1_loop:
     pop bc
     djnz mapgen1_loop
 
-    ; エリア境界を壁 ($80) で囲う
-    ld a, $80
-    ld bc, $0000 ; X=0, Y=0
-    ld de, $4040 ; W=64, H=64
-    call mapgen_rect
+    ; 影を描画
+    ld l, $01
+mangen1_shadow_loopY:
+    ld h, $01
+mangen1_shadow_loopX:
+    ; HL が地面かチェック
+    push hl
+    call mapgen_get_chip
+    pop hl
+    cp $02
+    jnz mangen1_shadow_next ; 地面ではないのでスキップ
+
+    ; 上のチップが壁かチェック
+    push hl
+    dec l
+    call mapgen_get_chip
+    pop hl
+    cp $80
+    jz mangen1_shadow_draw ; 上が壁なので影を描画
+
+    ; 左のチップが壁かチェック
+    push hl
+    dec h
+    call mapgen_get_chip
+    pop hl
+    cp $80
+    jz mangen1_shadow_draw ; 上が壁なので影を描画
+
+    ; 左上が壁かチェック
+    push hl
+    dec l
+    dec h
+    call mapgen_get_chip
+    pop hl
+    cp $80
+    jnz mangen1_shadow_next ; 左が壁ではないのでスキップ
+
+mangen1_shadow_draw:
+    ; 影を描画
+    ld a, $01
+    push hl
+    call mapgen_set_chip
+    pop hl
+
+mangen1_shadow_next:
+    ld a, h
+    inc a
+    and $3F
+    ld h, a
+    jnz mangen1_shadow_loopX
+
+    ld a, l
+    inc a
+    and $3F
+    ld l, a
+    jnz mangen1_shadow_loopY
     ret
 
 ; BC → DE に向かって 2x2 の穴を掘る
