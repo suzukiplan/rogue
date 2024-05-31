@@ -24,61 +24,51 @@ mapgen1_loop:
     djnz mapgen1_loop
 
     ; 影を描画
-    ld l, $01
-mangen1_shadow_loopY:
-    ld h, $01
-mangen1_shadow_loopX:
-    ; HL が地面かチェック
+    ld hl, $0101
+    call mangen_xy_to_addr_with_HL
+mangen1_shadow_loop:
     push hl
-    call mapgen_get_chip
-    pop hl
+
+    ; HL が地面かチェック
+    ld a, (hl)
     cp $02
     jnz mangen1_shadow_next ; 地面ではないのでスキップ
 
     ; 上のチップが壁かチェック
-    push hl
-    dec l
-    call mapgen_get_chip
-    pop hl
-    cp $80
-    jz mangen1_shadow_draw ; 上が壁なので影を描画
-
-    ; 左のチップが壁かチェック
-    push hl
-    dec h
-    call mapgen_get_chip
-    pop hl
+    add hl, -64
+    ld a, (hl)
     cp $80
     jz mangen1_shadow_draw ; 上が壁なので影を描画
 
     ; 左上が壁かチェック
-    push hl
-    dec l
-    dec h
-    call mapgen_get_chip
-    pop hl
+    add hl, -1
+    ld a, (hl)
+    cp $80
+    jz mangen1_shadow_draw ; 左上が壁なので影を描画
+
+    ; 左のチップが壁かチェック
+    add hl, 64
+    ld a, (hl)
     cp $80
     jnz mangen1_shadow_next ; 左が壁ではないのでスキップ
 
 mangen1_shadow_draw:
     ; 影を描画
-    ld a, $01
-    push hl
-    call mapgen_set_chip
     pop hl
+    push hl
+    ld a, $01
+    ld (hl), a
 
 mangen1_shadow_next:
-    ld a, h
-    inc a
-    and $3F
-    ld h, a
-    jnz mangen1_shadow_loopX
-
+    ; $A000 + 4096 - 64 まで繰り返す
+    pop hl
+    inc hl
     ld a, l
-    inc a
-    and $3F
-    ld l, a
-    jnz mangen1_shadow_loopY
+    cp $C0
+    jnz mangen1_shadow_loop
+    ld a, h
+    cp $AF
+    jnz mangen1_shadow_loop
     ret
 
 ; BC → DE に向かって 2x2 の穴を掘る
