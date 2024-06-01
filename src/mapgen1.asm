@@ -1,5 +1,6 @@
 .mapgen1
     call mapgen_init_chip_dungeon
+
     ; マップを壁 ($80) で埋める
     ld a, (mapchip_wall)
     ld bc, $0000 ; X=0, Y=0
@@ -9,6 +10,10 @@
     ; 最初の部屋を作成
     call mapgen_make_room ; 部屋をランダム位置に作成して中央座標が BC に返る
     ld de, bc             ; 中央座標を DE へ保持
+    ld a, b
+    ld (map1st_x), a
+    ld a, c
+    ld (map1st_y), a
 
     ; 2つ目以降の部屋を作成
     ld b, 8

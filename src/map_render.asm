@@ -1,7 +1,5 @@
 .map_render_init
     xor a
-    ld (map_top), a
-    ld (map_left), a
     ld (map_sx), a
     ld (map_sy), a
     ; Attribute を $84 で更新

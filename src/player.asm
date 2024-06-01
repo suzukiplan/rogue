@@ -8,10 +8,6 @@
     xor a
     ld (player_an), a
     ld (player_dir), a
-    ld h, 100
-    ld l, 0
-    ld (player_x), hl
-    ld (player_y), hl
     ld h, 0
     ld (player_vx), hl
     ld (player_vy), hl

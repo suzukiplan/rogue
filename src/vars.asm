@@ -97,6 +97,9 @@ defvars $c000
     map_sy ds.b 1                   ; マップスクロールY（-7〜7）
     map_refresh ds.b 1              ; マップ再描画フラグ
 
+    map1st_x ds.b 1                 ; 生成したマップの最初の部屋の中央座標（X）
+    map1st_y ds.b 1                 ; 生成したマップの最初の部屋の中央座標（Y）
+
     status_pos ds.b 1               ; ステータスウィンドウの座標（0〜31）
     status_tag ds.b 1               ; ステータスウィンドウの目標座標（0〜31）
     status_dir ds.b 1               ; 移動フラグ（00: 移動なし, 01: 右方向へ移動, FF: 左方向へ移動）※左右切り替え用

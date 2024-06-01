@@ -1,300 +1,56 @@
 .map_generate
     xor a
     out ($B4), a
-    call map_generate_64x64
-    ld a, $01
-map_generate_loop:
-    out ($B5), a
-    inc a
-    jnz map_generate_loop
-
-    ld a, 15
-    out ($B4), a
-    call map_generate_64x64d
-    xor a
-    out ($B4), a
-
     call mapgen1
-    ret
 
-.map_generate_64x64
-    ; ゼロクリア
-    ld hl, $A000
-    ld bc, $2000
-map_generate_64x64_clear:
-    ld a, $02
-    ld (hl), a
-    inc hl
-    dec bc
-    ld a, b
-    and a
-    jnz map_generate_64x64_clear
-    ld a, c
-    and a
-    jnz map_generate_64x64_clear
-
-    ; 8x8 毎に 2x2 の壁を描画
-    ld hl, $A000
-
-    ld c, 8
-map_generate_64x64_2x2_y:
-    ld b, 8
-map_generate_64x64_2x2_x:
-    push hl
-        add hl, 3 * 64 + 3
-        ld a, $80
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld a, $01
-        ld (hl), a
-        add hl, 62
-        ld a, $80
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld a, $01
-        ld (hl), a
-        add hl, 62
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld (hl), a
-    pop hl
-    add hl, 8
-    djnz map_generate_64x64_2x2_x
-    dec c
-    add hl, 7 * 64
-    jnz map_generate_64x64_2x2_y
-
-    ; 壁 ($80) で上下を囲む
-    ld hl, $A000
-    ld b, 64
-map_generate_64x64_wall_ud:
-    ld a, b
-    cp 30
-    jz map_generate_64x64_wall_ud_skip
-    cp 31
-    jz map_generate_64x64_wall_ud_skip
+    ; 最初の部屋の中央座標にプレイヤ初期座標 (X) を設定
+    ld a, (map1st_x)
+    cp 16
+    jc map_generate_set_left_zero
     cp 32
-    jz map_generate_64x64_wall_ud_skip
-    cp 33
-    jz map_generate_64x64_wall_ud_skip
-    ld a, $80
-    ld (hl), a
-    add hl, 64
-    ld a, $01
-    ld (hl), a
-    add hl, 64 * 62
-    ld a, $80
-    ld (hl), a
-    add hl, -(64 * 63)
-    inc hl
-    djnz map_generate_64x64_wall_ud
-    jr map_generate_64x64_wall_ud_end
-map_generate_64x64_wall_ud_skip:
-    ld a, $02
-    ld (hl), a
-    add hl, 64
-    ld a, $02
-    ld (hl), a
-    add hl, 64 * 62
-    ld a, $02
-    ld (hl), a
-    add hl, -(64 * 63)
-    inc hl
-    djnz map_generate_64x64_wall_ud
-map_generate_64x64_wall_ud_end:
+    jnc map_generate_set_left_limit
+    sub 16
+    jr map_generate_set_left
+map_generate_set_left_limit:
+    ld a, 31
+    jr map_generate_set_left
+map_generate_set_left_zero:
+    xor a
+map_generate_set_left:
+    ld (map_left), a
+    ld a, (map1st_x)
+    ld hl, map_left
+    sub (hl)
+    rlca ; x2
+    rlca ; x4
+    rlca ; x8
+    ld h, a
+    ld l, 0
+    ld (player_x), hl
 
-    ; 壁 ($80) で左右を囲む
-    ld hl, $A000 + 64
-    ld b, 62
-map_generate_64x64_wall_lr:
-    ld a, b
-    cp 29
-    jz map_generate_64x64_wall_lr_skip02
-    cp 30
-    jz map_generate_64x64_wall_lr_skip02
-    cp 31
-    jz map_generate_64x64_wall_lr_skip02
-    cp 32
-    jz map_generate_64x64_wall_lr_skip01
-    ld a, $80
-    ld (hl), a
-    inc hl
-    ld a, $01
-    ld (hl), a
-    add hl, 62
-    ld a, $80
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64_wall_lr
-    ret
-map_generate_64x64_wall_lr_skip01:
-    ld a, $01
-    ld (hl), a
-    inc hl
-    ld a, $01
-    ld (hl), a
-    add hl, 62
-    ld a, $01
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64_wall_lr
-    ret
-map_generate_64x64_wall_lr_skip02:
-    ld a, $02
-    ld (hl), a
-    inc hl
-    ld a, $02
-    ld (hl), a
-    add hl, 62
-    ld a, $02
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64_wall_lr
-    ret
+    ; 最初の部屋の中央座標にプレイヤ初期座標 (Y) を設定
+    ld a, (map1st_y)
+    cp 12
+    jc map_generate_set_top_zero
+    cp 40
+    jnc map_generate_set_top_limit
+    sub 12
+    jr map_generate_set_top
+map_generate_set_top_limit:
+    ld a, 39
+    jr map_generate_set_top
+map_generate_set_top_zero:
+    xor a
+map_generate_set_top:
+    ld (map_top), a
+    ld a, (map1st_y)
+    ld hl, map_top
+    sub (hl)
+    rlca ; x2
+    rlca ; x4
+    rlca ; x8
+    ld h, a
+    ld l, 0
+    ld (player_y), hl
 
-.map_generate_64x64d
-    ; ゼロクリア
-    ld hl, $A000
-    ld bc, $2000
-map_generate_64x64d_clear:
-    ld a, $01
-    ld (hl), a
-    inc hl
-    dec bc
-    ld a, b
-    and a
-    jnz map_generate_64x64d_clear
-    ld a, c
-    and a
-    jnz map_generate_64x64d_clear
-
-    ; 8x8 毎に 2x2 の壁を描画
-    ld hl, $A000
-
-    ld c, 8
-map_generate_64x64d_2x2_y:
-    ld b, 8
-map_generate_64x64d_2x2_x:
-    push hl
-        add hl, 3 * 64 + 3
-        ld a, $80
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld a, $01
-        ld (hl), a
-        add hl, 62
-        ld a, $80
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld a, $01
-        ld (hl), a
-        add hl, 62
-        ld (hl), a
-        inc hl
-        ld (hl), a
-        inc hl
-        ld (hl), a
-    pop hl
-    add hl, 8
-    djnz map_generate_64x64d_2x2_x
-    dec c
-    add hl, 7 * 64
-    jnz map_generate_64x64d_2x2_y
-
-    ; 壁 ($80) で上下を囲む
-    ld hl, $A000
-    ld b, 64
-map_generate_64x64d_wall_ud:
-    ld a, b
-    cp 30
-    jz map_generate_64x64d_wall_ud_skip
-    cp 31
-    jz map_generate_64x64d_wall_ud_skip
-    cp 32
-    jz map_generate_64x64d_wall_ud_skip
-    cp 33
-    jz map_generate_64x64d_wall_ud_skip
-    ld a, $80
-    ld (hl), a
-    add hl, 64
-    ld a, $01
-    ld (hl), a
-    add hl, 64 * 62
-    ld a, $80
-    ld (hl), a
-    add hl, -(64 * 63)
-    inc hl
-    djnz map_generate_64x64d_wall_ud
-    jr map_generate_64x64d_wall_ud_end
-map_generate_64x64d_wall_ud_skip:
-    ld a, $01
-    ld (hl), a
-    add hl, 64
-    ld a, $01
-    ld (hl), a
-    add hl, 64 * 62
-    ld a, $01
-    ld (hl), a
-    add hl, -(64 * 63)
-    inc hl
-    djnz map_generate_64x64d_wall_ud
-map_generate_64x64d_wall_ud_end:
-
-    ; 壁 ($80) で左右を囲む
-    ld hl, $A000 + 64
-    ld b, 62
-map_generate_64x64d_wall_lr:
-    ld a, b
-    cp 29
-    jz map_generate_64x64d_wall_lr_skip02
-    cp 30
-    jz map_generate_64x64d_wall_lr_skip02
-    cp 31
-    jz map_generate_64x64d_wall_lr_skip02
-    cp 32
-    jz map_generate_64x64d_wall_lr_skip01
-    ld a, $80
-    ld (hl), a
-    inc hl
-    ld a, $01
-    ld (hl), a
-    add hl, 62
-    ld a, $80
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64d_wall_lr
-    ret
-map_generate_64x64d_wall_lr_skip01:
-    ld a, $01
-    ld (hl), a
-    inc hl
-    ld a, $01
-    ld (hl), a
-    add hl, 62
-    ld a, $01
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64d_wall_lr
-    ret
-map_generate_64x64d_wall_lr_skip02:
-    ld a, $01
-    ld (hl), a
-    inc hl
-    ld a, $01
-    ld (hl), a
-    add hl, 62
-    ld a, $01
-    ld (hl), a
-    inc hl
-    djnz map_generate_64x64d_wall_lr
     ret
