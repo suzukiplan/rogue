@@ -1,6 +1,7 @@
 .mapgen1
+    call mapgen_init_chip_dungeon
     ; マップを壁 ($80) で埋める
-    ld a, $80
+    ld a, (mapchip_wall)
     ld bc, $0000 ; X=0, Y=0
     ld de, $4040 ; W=64, H=64
     call mapgen_fill
@@ -31,32 +32,34 @@ mangen1_shadow_loop:
 
     ; HL が地面かチェック
     ld a, (hl)
-    cp $02
+    ld ix, mapchip_ground
+    cp (ix+0)
     jnz mangen1_shadow_next ; 地面ではないのでスキップ
 
     ; 上のチップが壁かチェック
     add hl, -64
     ld a, (hl)
-    cp $80
+    ld ix, mapchip_wall
+    cp (ix+0)
     jz mangen1_shadow_draw ; 上が壁なので影を描画
 
     ; 左上が壁かチェック
     add hl, -1
     ld a, (hl)
-    cp $80
+    cp (ix+0)
     jz mangen1_shadow_draw ; 左上が壁なので影を描画
 
     ; 左のチップが壁かチェック
     add hl, 64
     ld a, (hl)
-    cp $80
+    cp (ix+0)
     jnz mangen1_shadow_next ; 左が壁ではないのでスキップ
 
 mangen1_shadow_draw:
     ; 影を描画
     pop hl
     push hl
-    ld a, $01
+    ld a, (mapchip_shadow)
     ld (hl), a
 
 mangen1_shadow_next:
@@ -92,7 +95,7 @@ mapgen1_dig_h_plus:
 mapgen1_dig_horizontal_do:
     push de
     ld de, $0202
-    ld a, $02
+    ld a, (mapchip_ground)
     call mapgen_fill
     pop de
     jr mapgen1_dig_horizontal
@@ -110,7 +113,7 @@ mapgen1_dig_v_plus:
 mapgen1_dig_vertical_do:
     push de
     ld de, $0202
-    ld a, $02
+    ld a, (mapchip_ground)
     call mapgen_fill
     pop de
     jr mapgen1_dig_vertical

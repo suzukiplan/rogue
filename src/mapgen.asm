@@ -1,3 +1,22 @@
+.mapgen_init_chip_dungeon
+    ld a, $02
+    ld (mapchip_ground), a
+    ld a, $01
+    ld (mapchip_shadow), a
+    ld a, $80
+    ld (mapchip_wall), a
+    ret
+
+.mapgen_init_chip_rogue
+    ld a, $10
+    ld (mapchip_ground), a
+    ld a, $00
+    ld (mapchip_shadow), a
+    ld a, $81
+    ld (mapchip_wall), a
+    ret
+
+
 ; HL に指定されたマップ座標系をアドレス形式に変換（HL以外のレジスタは変えない）
 .mangen_xy_to_addr_with_HL
     push af
@@ -208,7 +227,7 @@ mapgen_make_room_retry4:
     cp 64
     jnc mapgen_make_room_retry4 ; y+h >= 64 ならリトライ
 
-    ld a, $02
+    ld a, (mapchip_ground)
     call mapgen_fill
     ; 中央座標（穴掘り用）を返す
     srl d

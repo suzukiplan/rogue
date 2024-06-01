@@ -59,6 +59,11 @@ defvars $0000
     rect_size ds.b 1
 }
 
+; 拡張RAMバンクのグローバル変数
+defvars $b000
+{
+}
+
 ; グローバル変数
 defvars $c000
 {
@@ -81,6 +86,10 @@ defvars $c000
     player_ww ds.b 1                ; プレイヤ攻撃アクションテーブルのインデクス加算待ちフレーム
     player_wk ds.b 1                ; 攻撃モーションキープモード・フラグ
     player_wa ds.b actbl_size * 2   ; 攻撃モーションキープ対象のアクションテーブル・レコード
+
+    mapchip_ground ds.b 1           ; 地面のマップチップ
+    mapchip_shadow ds.b 1           ; 影のマップチップ
+    mapchip_wall ds.b 1             ; 壁のマップチップ
 
     map_top ds.b 1                  ; マップ描画基点（上）
     map_left ds.b 1                 ; マップ描画基点（左）
