@@ -32,7 +32,7 @@ player_map_limit_check_up:
 
 player_map_limit_check_down:
     ld a, (player_y + 1)
-    cp 192
+    cp 184
     ret c
     call map_scroll_bottom
     ret
