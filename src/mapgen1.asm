@@ -18,6 +18,10 @@ mapgen1_loop:
     call mapgen_make_room ; 部屋をランダム位置に作成して中央座標が BC に返る
     pop de
     push bc
+    ld a, b
+    ld (maplast_x), a
+    ld a, c
+    ld (maplast_y), a
     call mapgen1_dig ; 直前の部屋の中央座標（DE）と現在の部屋の中央座標（BC）を掘って繋げる
     pop bc
     ld de, bc
