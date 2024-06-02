@@ -1,12 +1,4 @@
 .mapgen1
-    call mapgen_init_chip_dungeon
-
-    ; マップを壁 ($80) で埋める
-    ld a, (mapchip_wall)
-    ld bc, $0000 ; X=0, Y=0
-    ld de, $4040 ; W=64, H=64
-    call mapgen_fill
-
     ; 最初の部屋を作成
     call mapgen_make_room ; 部屋をランダム位置に作成して中央座標が BC に返る
     ld de, bc             ; 中央座標を DE へ保持
@@ -16,7 +8,10 @@
     ld (map1st_y), a
 
     ; 2つ目以降の部屋を作成
-    ld b, 8
+    in a, ($CA)
+    and $07
+    add 2
+    ld b, a
 mapgen1_loop:
     push bc
     push de
@@ -29,54 +24,6 @@ mapgen1_loop:
     pop bc
     djnz mapgen1_loop
 
-    ; 影を描画
-    ld hl, $0101
-    call mangen_xy_to_addr_with_HL
-mangen1_shadow_loop:
-    push hl
-
-    ; HL が地面かチェック
-    ld a, (hl)
-    ld ix, mapchip_ground
-    cp (ix+0)
-    jnz mangen1_shadow_next ; 地面ではないのでスキップ
-
-    ; 上のチップが壁かチェック
-    add hl, -64
-    ld a, (hl)
-    ld ix, mapchip_wall
-    cp (ix+0)
-    jz mangen1_shadow_draw ; 上が壁なので影を描画
-
-    ; 左上が壁かチェック
-    add hl, -1
-    ld a, (hl)
-    cp (ix+0)
-    jz mangen1_shadow_draw ; 左上が壁なので影を描画
-
-    ; 左のチップが壁かチェック
-    add hl, 64
-    ld a, (hl)
-    cp (ix+0)
-    jnz mangen1_shadow_next ; 左が壁ではないのでスキップ
-
-mangen1_shadow_draw:
-    ; 影を描画
-    pop hl
-    push hl
-    ld a, (mapchip_shadow)
-    ld (hl), a
-
-mangen1_shadow_next:
-    ; $A000 + 4096 - 64 まで繰り返す
-    pop hl
-    inc hl
-    ld a, l
-    cp $C0
-    jnz mangen1_shadow_loop
-    ld a, h
-    cp $AF
-    jnz mangen1_shadow_loop
     ret
 
 ; BC → DE に向かって 2x2 の穴を掘る

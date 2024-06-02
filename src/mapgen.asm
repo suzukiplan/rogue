@@ -16,6 +16,18 @@
     ld (mapchip_wall), a
     ret
 
+; 全てのマップバンクをゼロクリア
+.mapgen_init_banks
+    ld b, 0
+    ld a, 0
+    ld hl, $2000
+mapgen_init_banks_loop:
+    push bc
+    ld bc, $A000
+    out ($C2), a
+    pop bc
+    djnz mapgen_init_banks_loop
+    ret
 
 ; HL に指定されたマップ座標系をアドレス形式に変換（HL以外のレジスタは変えない）
 .mangen_xy_to_addr_with_HL
@@ -98,6 +110,15 @@ mangen_calc_addr_height_checked:
 
     ; A をスタックから復帰
     pop af
+    ret
+
+; マップを壁で埋める
+.mapgen_fill_wall
+    ; マップを壁 ($80) で埋める
+    ld a, (mapchip_wall)
+    ld bc, $0000 ; X=0, Y=0
+    ld de, $4040 ; W=64, H=64
+    call mapgen_fill
     ret
 
 ; 指定された範囲のマップを指定されたパターンで埋める
@@ -243,7 +264,7 @@ mapgen_make_room_retry4:
 ; 指定されたマップ座標のチップパターンを取得（Aに返す）
 ; H = 基点X座標（0〜63）
 ; L = 基点Y座標（0〜63）
-mapgen_get_chip:
+.mapgen_get_chip
     call mangen_xy_to_addr_with_HL
     ld a, (hl)
     ret
@@ -252,7 +273,112 @@ mapgen_get_chip:
 ; A = 書き込むチップパターン
 ; H = 基点X座標（0〜63）
 ; L = 基点Y座標（0〜63）
-mapgen_set_chip:
+.mapgen_set_chip
     call mangen_xy_to_addr_with_HL
     ld (hl), a
+    ret
+
+; 現在のマップに影を描画
+.mangen_shadow
+    ; 影を描画
+    ld hl, $0101
+    call mangen_xy_to_addr_with_HL
+mangen_shadow_loop:
+    push hl
+
+    ; HL が地面かチェック
+    ld a, (hl)
+    ld ix, mapchip_ground
+    cp (ix+0)
+    jnz mangen_shadow_next ; 地面ではないのでスキップ
+
+    ; 上のチップが壁かチェック
+    add hl, -64
+    ld a, (hl)
+    ld ix, mapchip_wall
+    cp (ix+0)
+    jz mangen_shadow_draw ; 上が壁なので影を描画
+
+    ; 左上が壁かチェック
+    add hl, -1
+    ld a, (hl)
+    cp (ix+0)
+    jz mangen_shadow_draw ; 左上が壁なので影を描画
+
+    ; 左のチップが壁かチェック
+    add hl, 64
+    ld a, (hl)
+    cp (ix+0)
+    jnz mangen_shadow_next ; 左が壁ではないのでスキップ
+
+mangen_shadow_draw:
+    ; 影を描画
+    pop hl
+    push hl
+    ld a, (mapchip_shadow)
+    ld (hl), a
+
+mangen_shadow_next:
+    ; $A000 + 4096 - 64 まで繰り返す
+    pop hl
+    inc hl
+    ld a, l
+    cp $C0
+    jnz mangen_shadow_loop
+    ld a, h
+    cp $AF
+    jnz mangen_shadow_loop
+    ret
+
+; プレイヤポジションを map1st_x, map1st_y に初期化
+.mangen_player_position_init
+    ; 最初の部屋の中央座標にプレイヤ初期座標 (X) を設定
+    ld a, (map1st_x)
+    cp 16
+    jc map_generate_set_left_zero
+    cp 32
+    jnc map_generate_set_left_limit
+    sub 16
+    jr map_generate_set_left
+map_generate_set_left_limit:
+    ld a, 31
+    jr map_generate_set_left
+map_generate_set_left_zero:
+    xor a
+map_generate_set_left:
+    ld (map_left), a
+    ld a, (map1st_x)
+    ld hl, map_left
+    sub (hl)
+    rlca ; x2
+    rlca ; x4
+    rlca ; x8
+    ld h, a
+    ld l, 0
+    ld (player_x), hl
+
+    ; 最初の部屋の中央座標にプレイヤ初期座標 (Y) を設定
+    ld a, (map1st_y)
+    cp 12
+    jc map_generate_set_top_zero
+    cp 40
+    jnc map_generate_set_top_limit
+    sub 12
+    jr map_generate_set_top
+map_generate_set_top_limit:
+    ld a, 39
+    jr map_generate_set_top
+map_generate_set_top_zero:
+    xor a
+map_generate_set_top:
+    ld (map_top), a
+    ld a, (map1st_y)
+    ld hl, map_top
+    sub (hl)
+    rlca ; x2
+    rlca ; x4
+    rlca ; x8
+    ld h, a
+    ld l, 0
+    ld (player_y), hl
     ret
