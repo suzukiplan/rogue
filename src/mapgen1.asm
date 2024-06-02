@@ -10,7 +10,7 @@
     ; 2つ目以降の部屋を作成
     in a, ($CA)
     and $07
-    add 2
+    add 3
     ld b, a
 mapgen1_loop:
     push bc
