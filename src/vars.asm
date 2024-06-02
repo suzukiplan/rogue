@@ -101,6 +101,9 @@ defvars $c000
     map1st_y ds.b 1                 ; 生成したマップの最初の部屋の中央座標（Y）
     maplast_x ds.b 1                ; 生成したマップの最後の部屋の中央座標（X）
     maplast_y ds.b 1                ; 生成したマップの最後の部屋の中央座標（Y）
+    mapgen_cp ds.b 1                ; マップ生成用ワーク（現在ページ）
+    mapgen_np ds.b 1                ; マップ生成用ワーク（次ページ）
+    mapgen_ns ds.w 1                ; 次マップを掘る時の初期座標
 
     status_pos ds.b 1               ; ステータスウィンドウの座標（0〜31）
     status_tag ds.b 1               ; ステータスウィンドウの目標座標（0〜31）

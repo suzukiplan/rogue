@@ -13,6 +13,7 @@
     call mangen_player_position_init
 
     ; 最後の部屋の座標（maplast_x, maplast_y）のどちらに彫り進めれば隣区画に最短の経路になるかを求める
+map_generate_next:
     ld hl, maplast_x
     ld a, (hl)
     ld b, a
@@ -57,7 +58,46 @@ map_generate_LUZ:
     cp d
     jc map_generate_L ; 左(B) < 上(D) なので左に掘り進める
     jr map_generate_U ; 左(B) >= 上(D) なので上に掘り進める
+
 map_generate_L:
+    call map_generate_digL
+    jr map_generate_digend
+map_generate_R:
+    call map_generate_digR
+    jr map_generate_digend
+map_generate_U:
+    call map_generate_digU
+    jr map_generate_digend
+map_generate_D:
+    call map_generate_digD
+map_generate_digend:
+
+    call mangen_shadow
+    ld a, (mapgen_np)
+    and a
+    jz map_generate_end ; 次エリアを掘れなかったのでここまで
+
+    out ($B4), a
+    call mapgen_fill_wall
+    ld bc, (mapgen_ns)
+    ld de, $0202
+    ld a, (mapchip_ground)
+    push bc
+    call mapgen_fill
+    pop bc
+    ld de, bc
+    call mapgen1_2nd
+    jp map_generate_next
+
+map_generate_end:
+    xor a
+    out ($B4), a
+    ret
+
+.map_generate_digL
+    ld hl, $FF00
+    call man_generate_check_next_area
+    ret z
     ld b, 0
     ld a, (maplast_y)
     ld c, a
@@ -68,9 +108,16 @@ map_generate_L:
     ld a, (mapchip_ground)
     ld a, (mapchip_wall)
     call mapgen_fill
-    xor a
-    jr map_generate_digend
-map_generate_R:
+    ld a, (maplast_y)
+    ld l, a
+    ld h, 62
+    ld (mapgen_ns), hl
+    ret
+
+.map_generate_digR
+    ld hl, $0100
+    call man_generate_check_next_area
+    ret z
     ld a, (maplast_x)
     ld b, a
     ld a, (maplast_y)
@@ -78,9 +125,16 @@ map_generate_R:
     ld de, $4002
     ld a, (mapchip_ground)
     call mapgen_fill
-    xor a
-    jr map_generate_digend
-map_generate_U:
+    ld a, (maplast_y)
+    ld l, a
+    ld h, 0
+    ld (mapgen_ns), hl
+    ret
+
+.map_generate_digU
+    ld hl, $00FF
+    call man_generate_check_next_area
+    ret z
     ld a, (maplast_x)
     ld b, a
     ld c, 0
@@ -89,9 +143,16 @@ map_generate_U:
     ld e, a
     ld a, (mapchip_ground)
     call mapgen_fill
-    xor a
-    jr map_generate_digend
-map_generate_D:
+    ld a, (maplast_x)
+    ld h, a
+    ld l, 62
+    ld (mapgen_ns), hl
+    ret
+
+.map_generate_digD
+    ld hl, $0001
+    call man_generate_check_next_area
+    ret z
     ld a, (maplast_x)
     ld b, a
     ld a, (maplast_y)
@@ -99,7 +160,43 @@ map_generate_D:
     ld de, $0240
     ld a, (mapchip_ground)
     call mapgen_fill
+    ld a, (maplast_x)
+    ld h, a
+    ld l, 0
+    ld (mapgen_ns), hl
+    ret
+
+.man_generate_check_next_area
+    in a, ($B4)
+    ld (mapgen_cp), a
+    ld b, a
+    srl a
+    srl a
+    srl a
+    srl a
+    add l
+    and $0F
+    rlca
+    rlca
+    rlca
+    rlca
+    ld l, a
+    ld a, b
+    add h
+    and $0F
+    or l
+
+    ld (mapgen_np), a
+    out ($B4), a
+    ld a, ($A000)
+    and a
+    jz man_generate_check_next_area_end
+man_generate_check_next_area_failed:    
     xor a
-map_generate_digend:
-    call mangen_shadow
+    ld (mapgen_np), a
+man_generate_check_next_area_end:
+    ld a, (mapgen_cp)
+    out ($B4), a
+    ld a, (mapgen_np)
+    and a
     ret

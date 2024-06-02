@@ -7,6 +7,7 @@
     ld a, c
     ld (map1st_y), a
 
+.mapgen1_2nd
     ; 2つ目以降の部屋を作成
     in a, ($CA)
     and $07
