@@ -273,7 +273,7 @@ player_hitchk_map_execute:
     ld b, a
     ld a, (hitchk_work + rect_size + rect_y)
     and $07
-    add b
+    sub b
     ret z ; 左下チップのY座標 mod 8 と プレイヤY座標 mod 8 が同値なので補正なし
 
     ; 進行方向をチェック
