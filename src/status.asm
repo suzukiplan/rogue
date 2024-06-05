@@ -72,6 +72,8 @@ status_init_lr:
     ld (status_dir), a
     ld (status_vdir), a
     ld (status_hidden), a
+    ld a, $ff
+    ld (status_area), a
 
     ld hl, $0202
     ld de, status_str0
@@ -101,6 +103,11 @@ status_str2: db "A.RPG",0
     ret
 
 .status_update
+    ld hl, status_area
+    in a, ($B4)
+    cp (hl)
+    call nz, status_update_area
+
     ld a, (status_vdir)
     and a
     ret nz
@@ -283,4 +290,22 @@ status_toggle_move_do:
     xor a
     ld (status_vdir), a
 
+    ret
+
+.status_update_area
+    ld b, a
+    and $0F
+    ld hl, $0802
+    call vdp_print_u8_with_AHL
+    ld a, ' '
+    ld (hl), a
+    ld a, b
+    srl a
+    srl a
+    srl a
+    srl a
+    ld hl, $0902
+    call vdp_print_u8_with_AHL
+    ld a, ' '
+    ld (hl), a
     ret

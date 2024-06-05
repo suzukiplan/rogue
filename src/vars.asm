@@ -111,6 +111,7 @@ defvars $c000
     status_vdir ds.b 1              ; 移動フラグ（00: 移動なし, 01: 右方向へ移動, FF: 左方向へ移動）※可視切り替え用
     status_hidden ds.b 1            ; ステータス非表示
     status_ax ds.b 1                ; ステータス表示・非表示の時のアトリビュート設定位置
+    status_area ds.b 1              ; マップのエリア座標
 
     hitchk_work ds.b rect_size * 2  ; 当たり判定用ワークエリア
     actbl_work ds.b 512             ; アクションテーブルの読み込み領域
