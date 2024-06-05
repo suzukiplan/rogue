@@ -8,6 +8,7 @@ defvars $0000
     bank_status ds.b 1              ; ステータスウィンドウ
     bank_player ds.b 1              ; プレイヤ画像
     bank_map01 ds.b 1               ; マップ画像(01)
+    bank_item01 ds.b 1              ; アイテム画像(01)
 }
 
 ; アクションテーブル
