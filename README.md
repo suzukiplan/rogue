@@ -3,7 +3,7 @@
 ![preview.png](./preview.png)
 
 - [VGS-Zero](https://github.com/suzukiplan/vgszero) 用ゲームソフト
-- ローグライク ARPG のつもり
+- ローグライク ARPG のつもり（未完成）
 - オールマシン語（Z80 アセンブリ言語）で VGS-Zero のゲームを開発したい方向けに知見共有する目的で OSS にしておきます
 
 ## How to Execute
