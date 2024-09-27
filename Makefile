@@ -49,6 +49,6 @@ item01.chr: ./graphic/item01.bmp
 status.chr: ./graphic/status.bmp
 	${BMP2CHR} $< $@
 
-${EMU}:
+${EMU}: vgszero/src/core/*
 	cd vgszero/src/sdl2 && make
 
